@@ -60,7 +60,6 @@ if (isset($_GET['id'])) {
                 <img src="<?php echo $meta['profile_pic_path'] ?>" width="100" height="100" alt="Profile Pic">
             <?php endif; ?>
         </div>
-        <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
 </div>
 
@@ -87,7 +86,7 @@ if (isset($_GET['id'])) {
                 console.log('Response from server:', resp);
                 if (resp == 1) {
                     alert_toast("Data successfully saved", 'success');
-                    setTimeout(function() {
+                    setTimeout(function(e) {
                         location.reload();
                     }, 1500);
                 } else {

@@ -33,6 +33,7 @@ foreach($user->fetch_array() as $k =>$v){
 	</form>
 </div>
 <script>
+	console.log(<?php echo json_encode($meta); ?>);
 	$('#manage-user').submit(function(e){
 		e.preventDefault();
 		start_load()
@@ -41,13 +42,20 @@ foreach($user->fetch_array() as $k =>$v){
 			method:'POST',
 			data:$(this).serialize(),
 			success:function(resp){
+				console.log('response from server:', resp);
 				if(resp ==1){
 					alert_toast("Data successfully saved",'success')
 					setTimeout(function(){
 						location.reload()
-					},1500)
+					},1500);
+                } else {
+                    alert_toast("Failed to save data. Please try again", 'error');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert_toast("An error occurred while processing your request. Please try again later.", 'error');
 				}
-			}
 		})
 	})
 </script>
