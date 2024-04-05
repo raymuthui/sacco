@@ -15,19 +15,42 @@ Class Action {
 	    ob_end_flush();
 	}
 
-	function login(){
-		extract($_POST);
-		$qry = $this->db->query("SELECT * FROM users where username = '".$username."' and password = '".$password."' ");
-		if($qry->num_rows > 0){
-			foreach ($qry->fetch_array() as $key => $value) {
-				if($key != 'passwors' && !is_numeric($key))
-					$_SESSION['login_'.$key] = $value;
-			}
-				return 1;
-		}else{
-			return 3;
-		}
-	}
+	public function login(){
+        extract($_POST);
+        // Check in the users table
+        $qry = $this->db->query("SELECT * FROM users WHERE username = '$username' AND password = '$password'");
+        if($qry->num_rows > 0){
+            $user = $qry->fetch_assoc();
+            if ($user['status'] == 1) {
+                foreach ($user as $key => $value) {
+                    if($key != 'password' && !is_numeric($key)) {
+                        $_SESSION['login_'.$key] = $value;
+                    }
+                }
+                return 1;
+            } else {
+                return 3; // User is not active
+            }
+        } else {
+            // Check in the members table if not found in the users table
+            $qry = $this->db->query("SELECT * FROM members WHERE email = '$username' AND password = '$password'");
+            if($qry->num_rows > 0){
+                $member = $qry->fetch_assoc();
+                if ($member['status'] == 1) {
+                    foreach ($member as $key => $value) {
+                        if($key != 'password' && !is_numeric($key)) {
+                            $_SESSION['login_'.$key] = $value;
+                        }
+                    }
+                    return 2;
+                } else {
+                    return 3; // Member is not active
+                }
+            } else {
+                return 3; // Invalid username/password
+            }
+        }
+    }
 	function login2(){
 		extract($_POST);
 		$qry = $this->db->query("SELECT * FROM users where username = '".$email."' and password = '".md5($password)."' ");
