@@ -307,6 +307,7 @@ Class Action {
 		$data .= ", address = '$address' ";
 		$data .= ", contact_no = '$contact_no' ";
 		$data .= ", email = '$email' ";
+		$data .= ", password = '$password' ";
 		$data .= ", tax_id = '$tax_id' ";
 		$data .= ", id_front_path = '$upload_dir$id_front_file' "; // Store file paths in the database
 		$data .= ", id_back_path = '$upload_dir$id_back_file' "; // Store file paths in the database
