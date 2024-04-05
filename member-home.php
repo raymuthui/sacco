@@ -1,14 +1,16 @@
 <?php
+session_start();
+
 include('db_connect.php');
 
 // Check if the user is logged in and has a user ID in the session
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['login_id'])) {
     // Redirect or handle the case where the user is not logged in
     exit('User is not logged in.');
 }
 
 // Fetch the user ID from the session
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['login_id'];
 
 // Fetch member details based on the user ID
 $qry = $conn->query("SELECT * FROM members WHERE id = " . $user_id);
