@@ -68,17 +68,19 @@
             <img src="assets/img/logo.png" width="250px">
           </div>
           <form id="registration-form">
-            <div class="form-group">
-              <label for="lastname" class="control-label">Last Name</label>
-              <input type="text" id="lastname" name="lastname" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="firstname" class="control-label">First Name</label>
-              <input type="text" id="firstname" name="firstname" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="middlename" class="control-label">Middle Name</label>
-              <input type="text" id="middlename" name="middlename" class="form-control">
+            <div class="form-group row">
+              <div class="col">
+                <label for="lastname" class="control-label">Last Name</label>
+                <input type="text" id="lastname" name="lastname" class="form-control">
+              </div>
+              <div class="col">
+                <label for="firstname" class="control-label">First Name</label>
+                <input type="text" id="firstname" name="firstname" class="form-control">
+              </div>
+              <div class="col">
+                <label for="middlename" class="control-label">Middle Name</label>
+                <input type="text" id="middlename" name="middlename" class="form-control">
+              </div>
             </div>
             <div class="form-group">
               <label for="address" class="control-label">Address</label>
@@ -91,6 +93,10 @@
             <div class="form-group">
               <label for="email" class="control-label">Email</label>
               <input type="email" id="email" name="email" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="password" class="control-label">Password</label>
+              <input type="password" id="password" name="password" class="form-control">
             </div>
             <div class="form-group">
               <label for="tax_id" class="control-label">Tax ID</label>
