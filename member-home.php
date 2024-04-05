@@ -70,6 +70,14 @@ if (!$member) {
                 </div>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="card dashboard">
+                <div class="card-body">
+                    <h5 class="card-title">View Current Savings</h5>
+                    <a href="index.php?page=loan_applications" class="btn btn-primary btn-card">View Savings</a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="card-body">
         <table class="table table-bordered" id="loan-list">
