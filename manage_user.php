@@ -32,6 +32,7 @@ foreach($user->fetch_array() as $k =>$v){
 		</div>
 	</form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	console.log(<?php echo json_encode($meta); ?>);
 	$('#manage-user').submit(function(e){

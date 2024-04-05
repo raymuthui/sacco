@@ -72,7 +72,8 @@
 	td{
 		vertical-align: middle !important;
 	}
-</style>	
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
 <script>
 	$('#borrower-list').dataTable()
 	$('#new_borrower').click(function(){
