@@ -25,7 +25,7 @@
     #login-right {
       position: absolute;
       left: 0;
-      width: 30%;
+      width: 40%;
       height: calc(100%);
       display: flex;
       align-items: center;
