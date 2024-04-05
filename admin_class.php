@@ -327,5 +327,16 @@ Class Action {
 		if($delete)
 			return 1;
 	}
+	function approve_member(){
+		extract($_POST);
+		$update_query = "UPDATE members SET status = 1 WHERE id = $id";
+        $update_result = $this->db->query($update_query);
+
+        if ($update_result) {
+            return 1; // Successful update
+        } else {
+            return 0; // Failed update
+        }
+	}
 	
 }

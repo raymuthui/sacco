@@ -107,3 +107,9 @@ if($action == "delete_member"){
 	if($save)
 		echo $save;
 }
+
+if($action == "approve_member"){
+	$save = $crud->approve_member();
+	if($save)
+		echo $save;
+}
