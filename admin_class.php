@@ -167,6 +167,9 @@ class Action
 		extract($_POST);
 		$data = " type_name = '$type_name' ";
 		$data .= " , description = '$description' ";
+		$data = " months = '$months' ";
+		$data .= ", interest_percentage = '$interest_percentage' ";
+		$data .= ", penalty_rate = '$penalty_rate' ";
 		if (empty($id)) {
 			$save = $this->db->query("INSERT INTO loan_types set " . $data);
 		} else {
@@ -182,28 +185,28 @@ class Action
 		if ($delete)
 			return 1;
 	}
-	function save_plan()
-	{
-		extract($_POST);
-		$data = " months = '$months' ";
-		$data .= ", interest_percentage = '$interest_percentage' ";
-		$data .= ", penalty_rate = '$penalty_rate' ";
+	// function save_plan()
+	// {
+	// 	extract($_POST);
+	// 	$data = " months = '$months' ";
+	// 	$data .= ", interest_percentage = '$interest_percentage' ";
+	// 	$data .= ", penalty_rate = '$penalty_rate' ";
 
-		if (empty($id)) {
-			$save = $this->db->query("INSERT INTO loan_plan set " . $data);
-		} else {
-			$save = $this->db->query("UPDATE loan_plan set " . $data . " where id=" . $id);
-		}
-		if ($save)
-			return 1;
-	}
-	function delete_plan()
-	{
-		extract($_POST);
-		$delete = $this->db->query("DELETE FROM loan_plan where id = " . $id);
-		if ($delete)
-			return 1;
-	}
+	// 	if (empty($id)) {
+	// 		$save = $this->db->query("INSERT INTO loan_plan set " . $data);
+	// 	} else {
+	// 		$save = $this->db->query("UPDATE loan_plan set " . $data . " where id=" . $id);
+	// 	}
+	// 	if ($save)
+	// 		return 1;
+	// }
+	// function delete_plan()
+	// {
+	// 	extract($_POST);
+	// 	$delete = $this->db->query("DELETE FROM loan_plan where id = " . $id);
+	// 	if ($delete)
+	// 		return 1;
+	// }
 	function save_borrower()
 	{
 		extract($_POST);

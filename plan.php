@@ -1,10 +1,10 @@
-<?php include('db_connect.php');?>
+<!-- <?php include('db_connect.php');?>
 
 <div class="container-fluid">
 	
 	<div class="col-lg-12">
 		<div class="row">
-			<!-- FORM Panel -->
+			FORM Panel
 			<div class="col-md-4">
 			<form action="" id="manage-plan">
 				<div class="card">
@@ -51,9 +51,9 @@
 				</div>
 			</form>
 			</div>
-			<!-- FORM Panel -->
+			FORM Panel
 
-			<!-- Table Panel -->
+			Table Panel
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-body">
@@ -100,7 +100,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- Table Panel -->
+			Table Panel
 		</div>
 	</div>	
 
@@ -191,4 +191,4 @@
 			}
 		})
 	}
-</script>
+</script> -->

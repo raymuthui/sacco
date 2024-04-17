@@ -21,9 +21,28 @@
 								<label class="control-label">Description</label>
 								<textarea name="description" id="" cols="30" rows="2" class="form-control"></textarea>
 							</div>
-							
-							
-							
+							<div class="form-group">
+								<label class="control-label">Plan (months)</label>
+								<input type="number" name="months" id="" class="form-control text-right">
+							</div>
+							<div class="form-group">
+								<label class="control-label">Interest</label>
+								<div class="input-group">
+								  <input type="number" step="any" min="0" max="100" class="form-control text-right" name="interest_percentage" aria-label="Interest">
+								  <div class="input-group-append">
+								    <span class="input-group-text">%</span>
+								  </div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Monthly Over due's Penalty</label>
+								<div class="input-group">
+								  <input type="number" step="any" min="0" max="100" class="form-control text-right" aria-label="Penalty percentage" name="penalty_rate">
+								  <div class="input-group-append">
+								    <span class="input-group-text">%</span>
+								  </div>
+								</div>
+							</div>						
 					</div>
 							
 					<div class="card-footer">
@@ -63,9 +82,12 @@
 									<td class="">
 										 <p>Type Name: <b><?php echo $row['type_name'] ?></b></p>
 										 <p>Description: <b><?php echo $row['description'] ?></b></p>
+										 <p>Years/Month: <b><?php echo $row['months'] ?></b></p>
+										 <p>Interest: <b><?php echo $row['interest_percentage']."%" ?></b></p>
+										 <p>Over dure Penalty: <b><?php echo $row['penalty_rate']."%" ?></b></p>
 									</td>
 									<td class="text-center">
-										<button class="btn btn-primary edit_ltype" type="button" data-id="<?php echo $row['id'] ?>" data-type_name="<?php echo $row['type_name'] ?>" data-description="<?php echo $row['description'] ?>" ><i class="fa fa-edit"></i></button>
+										<button class="btn btn-primary edit_ltype" type="button" data-id="<?php echo $row['id'] ?>" data-type_name="<?php echo $row['type_name'] ?>" data-description="<?php echo $row['description'] ?>" data-months="<?php echo $row['months'] ?>" data-interest_percentage="<?php echo $row['interest_percentage'] ?>" data-penalty_rate="<?php echo $row['penalty_rate'] ?>"><i class="fa fa-edit"></i></button>
 										<button class="btn  btn-danger delete_ltype" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
 									</td>
 								</tr>
@@ -132,6 +154,9 @@
 		cat.find("[name='id']").val($(this).attr('data-id'))
 		cat.find("[name='type_name']").val($(this).attr('data-type_name'))
 		cat.find("[name='description']").val($(this).attr('data-description'))
+		cat.find("[name='months']").val($(this).attr('data-months'))
+		cat.find("[name='interest_percentage']").val($(this).attr('data-interest_percentage'))
+		cat.find("[name='penalty_rate']").val($(this).attr('data-penalty_rate'))
 		end_load()
 	})
 	$('.delete_ltype').click(function(){

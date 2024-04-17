@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 05, 2024 at 10:15 AM
+-- Generation Time: Apr 06, 2024 at 12:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,7 @@ CREATE TABLE `borrowers` (
 
 INSERT INTO `borrowers` (`id`, `firstname`, `middlename`, `lastname`, `contact_no`, `address`, `email`, `tax_id`, `date_created`) VALUES
 (1, 'Ni', 'Scam', 'Mapenzi', '9090909090', 'Rockport', 'scam@gmail.com', 'UIOJK23423', 0),
-(2, 'Eugene', 'Wamalwa', 'Kijana', '8080808080', 'Homabeiiii', 'kijana@gmail.com', 'JKL424K', 0);
+(2, 'Eugene', 'Wamalwa', 'Kijana', '8080808080', 'Homabeiiii', 'kijana@gmail.com', 'JKL424gk', 0);
 
 -- --------------------------------------------------------
 
@@ -94,9 +94,7 @@ CREATE TABLE `loan_plan` (
 INSERT INTO `loan_plan` (`id`, `months`, `interest_percentage`, `penalty_rate`) VALUES
 (1, 36, 8, 3),
 (2, 24, 5, 2),
-(3, 27, 6, 2),
-(4, 5, 12, 100),
-(5, 72, 12, 100);
+(3, 27, 6, 2);
 
 -- --------------------------------------------------------
 
@@ -244,7 +242,49 @@ INSERT INTO `loan_types` (`id`, `type_name`, `description`) VALUES
 (1, 'Small Business', 'Small Business Loans'),
 (2, 'Mortgages', 'Mortgages'),
 (3, 'Personal Loans', 'Personal Loans'),
-(4, 'Gold Loan', 'Loan by taking gold as Mortgage');
+(4, 'Gold Loan', 'Loan by taking gold as Mortgage'),
+(5, '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
+--
+
+CREATE TABLE `members` (
+  `id` int(30) NOT NULL,
+  `firstname` varchar(100) NOT NULL,
+  `middlename` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `contact_no` varchar(30) NOT NULL,
+  `address` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(250) DEFAULT NULL,
+  `tax_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=pending, 1=approved',
+  `id_front_path` varchar(255) NOT NULL,
+  `id_back_path` varchar(255) NOT NULL,
+  `profile_pic_path` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `members`
+--
+
+INSERT INTO `members` (`id`, `firstname`, `middlename`, `lastname`, `contact_no`, `address`, `email`, `password`, `tax_id`, `status`, `id_front_path`, `id_back_path`, `profile_pic_path`) VALUES
+(1, 'ninjago', 'black', 'muchai', '654566653', '323443', 'muchaininja@turtles.com', NULL, '4264', 0, 'uploads/', 'uploads/', 'uploads/'),
+(2, 'johnte', 'fresh', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(3, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(4, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(5, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(6, 'john', 'doe', 'muchai', '', '42322', '', NULL, '', 0, 'uploads/', 'uploads/', 'uploads/'),
+(7, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(8, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(9, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(10, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(11, 'scriv', 'fkolch', 'thames', '6043042', '5043', 'scrikolch@gmail.com', NULL, '4214', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(12, 'claudia', 'joan', 'ruth', '6043042', '42322', 'plusher-s@icloud.com', NULL, '432932', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
+(13, 'Lennox', 'Kimathi', 'Kabo', '0731313123', 'Embakasi, Imara Daima', 'lennox@gmail.com', '12345', '56hy', 1, 'uploads/Mpesa..png', 'uploads/spiral-logo.png', 'uploads/spiral-logo (1).png');
 
 -- --------------------------------------------------------
 
@@ -341,6 +381,12 @@ ALTER TABLE `loan_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `members`
+--
+ALTER TABLE `members`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `payments`
 --
 ALTER TABLE `payments`
@@ -384,7 +430,13 @@ ALTER TABLE `loan_schedules`
 -- AUTO_INCREMENT for table `loan_types`
 --
 ALTER TABLE `loan_types`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `members`
+--
+ALTER TABLE `members`
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `payments`
