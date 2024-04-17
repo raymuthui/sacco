@@ -167,9 +167,12 @@ class Action
 		extract($_POST);
 		$data = " type_name = '$type_name' ";
 		$data .= " , description = '$description' ";
-		$data = " months = '$months' ";
+		$data .= " , min_amount = '$min_amount' ";
+		$data .= " , max_amount = '$max_amount' ";
+		$data .= " , months = '$months' ";
 		$data .= ", interest_percentage = '$interest_percentage' ";
 		$data .= ", penalty_rate = '$penalty_rate' ";
+
 		if (empty($id)) {
 			$save = $this->db->query("INSERT INTO loan_types set " . $data);
 		} else {

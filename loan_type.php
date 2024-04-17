@@ -21,6 +21,16 @@
 								<label class="control-label">Description</label>
 								<textarea name="description" id="" cols="30" rows="2" class="form-control"></textarea>
 							</div>
+							<div class="form-group row">
+								<div class="col">
+									<label class="control-label">Minimum Loan Amount</label>
+									<input type="number" name="min_amount" id="" class="form-control text-right">
+								</div>
+								<div class="col">
+									<label class="control-label">Maximum Loan Amount</label>
+									<input type="number" name="max_amount" id="" class="form-control text-right">
+								</div>
+							</div>
 							<div class="form-group">
 								<label class="control-label">Plan (months)</label>
 								<input type="number" name="months" id="" class="form-control text-right">
@@ -82,12 +92,14 @@
 									<td class="">
 										 <p>Type Name: <b><?php echo $row['type_name'] ?></b></p>
 										 <p>Description: <b><?php echo $row['description'] ?></b></p>
+										 <p>Minimum Loan Amount <b><?php echo $row['min_amount'] ?></b></p>
+										 <p>Maximum Loan Amount <b><?php echo $row['max_amount'] ?></b></p>
 										 <p>Years/Month: <b><?php echo $row['months'] ?></b></p>
 										 <p>Interest: <b><?php echo $row['interest_percentage']."%" ?></b></p>
 										 <p>Over dure Penalty: <b><?php echo $row['penalty_rate']."%" ?></b></p>
 									</td>
 									<td class="text-center">
-										<button class="btn btn-primary edit_ltype" type="button" data-id="<?php echo $row['id'] ?>" data-type_name="<?php echo $row['type_name'] ?>" data-description="<?php echo $row['description'] ?>" data-months="<?php echo $row['months'] ?>" data-interest_percentage="<?php echo $row['interest_percentage'] ?>" data-penalty_rate="<?php echo $row['penalty_rate'] ?>"><i class="fa fa-edit"></i></button>
+										<button class="btn btn-primary edit_ltype" type="button" data-id="<?php echo $row['id'] ?>" data-type_name="<?php echo $row['type_name'] ?>" data-description="<?php echo $row['description'] ?>" data-min_amount="<?php echo $row['min_amount'] ?>" data-max_amount="<?php echo $row['max_amount'] ?>" data-months="<?php echo $row['months'] ?>" data-interest_percentage="<?php echo $row['interest_percentage'] ?>" data-penalty_rate="<?php echo $row['penalty_rate'] ?>"><i class="fa fa-edit"></i></button>
 										<button class="btn  btn-danger delete_ltype" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
 									</td>
 								</tr>
@@ -154,6 +166,8 @@
 		cat.find("[name='id']").val($(this).attr('data-id'))
 		cat.find("[name='type_name']").val($(this).attr('data-type_name'))
 		cat.find("[name='description']").val($(this).attr('data-description'))
+		cat.find("[name='min_amount']").val($(this).attr('data-min_amount'))
+		cat.find("[name='max_amount']").val($(this).attr('data-max_amount'))
 		cat.find("[name='months']").val($(this).attr('data-months'))
 		cat.find("[name='interest_percentage']").val($(this).attr('data-interest_percentage'))
 		cat.find("[name='penalty_rate']").val($(this).attr('data-penalty_rate'))
