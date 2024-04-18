@@ -1,6 +1,6 @@
 <?php include 'db_connect.php' ?>
 <?php 
-
+$members = $conn->query("SELECT * FROM members")->fetch_all();
 if(isset($_GET['id'])){
 	$qry = $conn->query("SELECT * FROM borrowers where id=".$_GET['id']);
 	foreach($qry->fetch_array() as $k => $val){
@@ -47,8 +47,13 @@ if(isset($_GET['id'])){
 			</div>
 			<div class="row form-group">
 				<div class="col-md-6">
-							<label for="">Email</label>
-							<input type="email" class="form-control" name="email" value="<?php echo isset($email) ? $email : '' ?>">
+					<label for="">Select Member</label>
+					<select name="member_id" class="form-control" required="">
+						<option value="">Select Member</option>
+						<?php foreach($members as $member): ?>
+							<option value="<?php echo $member[0] ?>" <?php echo isset($member_id) && $member_id == $member[0] ? 'selected' : '' ?>><?php echo $member[1] ?></option>
+						<?php endforeach; ?>
+					</select>
 				</div>
 				<div class="col-md-5">
 					<div class="">
@@ -62,32 +67,30 @@ if(isset($_GET['id'])){
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#manage-borrower').submit(function(e){
-            e.preventDefault(); // Prevent the default form submission behavior
-            start_load();
-            $.ajax({
-                url: 'ajax.php?action=save_borrower',
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function(resp){
-                    if(resp == 1){
-                        alert_toast("Borrower data successfully saved.","success");
-                        setTimeout(function(){
-                            location.reload();
-                        }, 1500);
-                    } else {
-                        alert_toast("Error saving data. Please try again.", "error");
-                        console.log(resp); // Log the response for debugging
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert_toast("Error: " + error, "error");
-                    console.log(xhr.responseText); // Log the detailed error message
-                }
-            });
-        });
-    });
+	$('#manage-borrower').submit(function(e){
+		e.preventDefault();
+		start_load();
+		$.ajax({
+			url: 'ajax.php?action=save_borrower',
+			method: 'POST',
+			data: $(this).serialize(),
+			success: function(resp){
+				if(resp == 1){
+					alert_toast("Borrower data successfully saved.","success");
+					setTimeout(function(e){
+						location.reload();
+					}, 1500);
+				} else {
+					alert_toast("Error saving data. Please try again.", "error");
+					console.log(resp); // Log the response for debugging
+				}
+			},
+			error: function(xhr, status, error) {
+				alert_toast("Error: " + error, "error");
+				console.log(xhr.responseText); // Log the detailed error message
+			}
+		});
+	});
+
 </script>

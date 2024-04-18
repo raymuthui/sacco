@@ -96,7 +96,7 @@
 										 <p>Maximum Loan Amount <b><?php echo $row['max_amount'] ?></b></p>
 										 <p>Years/Month: <b><?php echo $row['months'] ?></b></p>
 										 <p>Interest: <b><?php echo $row['interest_percentage']."%" ?></b></p>
-										 <p>Over dure Penalty: <b><?php echo $row['penalty_rate']."%" ?></b></p>
+										 <p>Over due Penalty: <b><?php echo $row['penalty_rate']."%" ?></b></p>
 									</td>
 									<td class="text-center">
 										<button class="btn btn-primary edit_ltype" type="button" data-id="<?php echo $row['id'] ?>" data-type_name="<?php echo $row['type_name'] ?>" data-description="<?php echo $row['description'] ?>" data-min_amount="<?php echo $row['min_amount'] ?>" data-max_amount="<?php echo $row['max_amount'] ?>" data-months="<?php echo $row['months'] ?>" data-interest_percentage="<?php echo $row['interest_percentage'] ?>" data-penalty_rate="<?php echo $row['penalty_rate'] ?>"><i class="fa fa-edit"></i></button>

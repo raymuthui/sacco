@@ -212,25 +212,43 @@ class Action
 	// 		return 1;
 	// }
 	function save_borrower()
-	{
-		extract($_POST);
-		$data = " lastname = '$lastname' ";
-		$data .= ", firstname = '$firstname' ";
-		$data .= ", middlename = '$middlename' ";
-		$data .= ", address = '$address' ";
-		$data .= ", contact_no = '$contact_no' ";
-		$data .= ", email = '$email' ";
-		$data .= ", tax_id = '$tax_id' ";
+{
+    extract($_POST);
 
-		if (empty($id)) {
-			$data .= ", date_created = NOW()";
-			$save = $this->db->query("INSERT INTO borrowers set " . $data);
-		} else {
-			$save = $this->db->query("UPDATE borrowers set " . $data . " where id=" . $id);
-		}
-		if ($save)
-			return 1;
-	}
+    $member_id = isset($_POST['member_id']) ? $_POST['member_id'] : '';
+
+    if(empty($member_id)){
+        return 2; // Member not selected
+    }
+
+    // Check if the selected member exists in the members table
+    $check_member = $this->db->query("SELECT * FROM members WHERE id = $member_id");
+    if ($check_member->num_rows > 0) {
+        $data = " lastname = '$lastname' ";
+        $data .= ", firstname = '$firstname' ";
+        $data .= ", middlename = '$middlename' ";
+        $data .= ", address = '$address' ";
+        $data .= ", contact_no = '$contact_no' ";
+        $data .= ", email = '$email' ";
+        $data .= ", tax_id = '$tax_id' ";
+        $data .= ", member_id = $member_id ";
+
+        if (empty($id)) {
+            $save = $this->db->query("INSERT INTO borrowers SET " . $data);
+        } else {
+            $save = $this->db->query("UPDATE borrowers SET " . $data . " WHERE id=" . $id);
+        }
+
+        if ($save) {
+            return 1; // Success
+        } else {
+            return 0; // Failed to save borrower data
+        }
+    } else {
+        return 3; // Selected member not found
+    }
+}
+
 	function delete_borrower()
 	{
 		extract($_POST);
