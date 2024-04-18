@@ -54,16 +54,16 @@ if($action == "delete_loan_type"){
 	if($save)
 		echo $save;
 }
-if($action == "save_plan"){
-	$save = $crud->save_plan();
-	if($save)
-		echo $save;
-}
-if($action == "delete_plan"){
-	$save = $crud->delete_plan();
-	if($save)
-		echo $save;
-}
+// if($action == "save_plan"){
+// 	$save = $crud->save_plan();
+// 	if($save)
+// 		echo $save;
+// }
+// if($action == "delete_plan"){
+// 	$save = $crud->delete_plan();
+// 	if($save)
+// 		echo $save;
+// }
 if($action == "save_borrower"){
 	$save = $crud->save_borrower();
 	if($save)

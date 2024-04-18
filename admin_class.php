@@ -84,6 +84,7 @@ class Action
 	{
 		extract($_POST);
 		$data = " name = '$name' ";
+		$data .= ", contact = '$contact'";
 		$data .= ", username = '$username' ";
 		$data .= ", password = '$password' ";
 		$data .= ", type = '$type' ";
