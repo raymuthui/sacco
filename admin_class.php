@@ -256,6 +256,24 @@ class Action
 		if ($delete)
 			return 1;
 	}
+	function fetch_member_details()
+	{
+		extract($_POST);
+
+		// Check if member_id is set and not empty
+		if (isset($member_id) && !empty($member_id)) {
+			// Fetch member details from the members table
+			$qry = $this->db->query("SELECT * FROM members WHERE id = $member_id");
+			if ($qry->num_rows > 0) {
+				$member_details = $qry->fetch_assoc();
+				return $member_details;
+			} else {
+				return null; // Member not found
+			}
+		} else {
+			return null; // No member_id provided
+		}
+	}
 	function save_loan()
 	{
 		extract($_POST);

@@ -74,6 +74,14 @@ if($action == "delete_borrower"){
 	if($save)
 		echo $save;
 }
+if ($action == "fetch_member_details") {
+    $fetch = $crud->fetch_member_details();
+    if ($fetch) {
+        echo json_encode($fetch);
+    } else {
+        echo json_encode(array());
+    }
+}
 if($action == "save_loan"){
 	$save = $crud->save_loan();
 	if($save)
