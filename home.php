@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class=" text-white stretched-link" href="index.php?page=borrowers">View Borrowers</a>
+                            <a class=" text-white stretched-link" href="index.php?page=members">View Members</a>
                             <div class=" text-white">
 
                             </div>
