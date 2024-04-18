@@ -223,6 +223,7 @@ class Action
 		$data .= ", tax_id = '$tax_id' ";
 
 		if (empty($id)) {
+			$data .= ", date_created = NOW()";
 			$save = $this->db->query("INSERT INTO borrowers set " . $data);
 		} else {
 			$save = $this->db->query("UPDATE borrowers set " . $data . " where id=" . $id);
