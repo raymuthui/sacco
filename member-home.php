@@ -3,6 +3,8 @@ session_start();
 
 include('db_connect.php');
 
+$baseurl = "http://localhost/sacco";
+
 // Check if the user is logged in and has a user ID in the session
 if (!isset($_SESSION['login_id'])) {
     // Redirect or handle the case where the user is not logged in
@@ -73,7 +75,7 @@ if (!$member) {
 
             <div class="flex flex-row justify-between px-12 py-4 w-full bg-[#f2efef]">
                 <div class="flex justify-item-start">
-                    <strong><p>Welcome to UTUMISHI Sacco, Member1!</p></strong>
+                    <strong><p>Welcome to UTUMISHI Sacco, <?php echo $member['firstname'] ?>!</p></strong>
                 </div>
 
                 <div class="flex flex-row gap-2">
@@ -85,10 +87,15 @@ if (!$member) {
     </header>
 
     <main class="d-flex flex-column px-12">
-        <div class="d-flex flex-row justify-content-between pt-5 gap-5 h-50">
+        <div class="d-flex flex-row justify-content-between pt-5 gap-5">
             <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                 <h2 class="font-semibold text-xl">Profile Overview</h2>
-                <div class="h-100 w-100 bg-danger rounded-lg"></div>
+                <div class="d-flex flex-column bg-[#f2efef] rounded-lg">
+                    <div class="flex place-items-center rounded-2xl border-solid m-2 border-blue-400" style="width: 150px; height: 150px;">
+                        <img class="image-fluid" src="<?php echo $baseurl. '/' . $member['profile_pic_path'] ?>" alt="profile pic">
+                    </div>
+                    <div></div>
+                </div>
             </div>
             <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                 <h2 class="font-semibold text-xl">Upcoming Sacco News</h2>
