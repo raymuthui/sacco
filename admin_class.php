@@ -213,41 +213,42 @@ class Action
 	// }
 	function save_borrower()
 	{
-    extract($_POST);
-
-    $member_id = isset($_POST['member_id']) ? $_POST['member_id'] : '';
-
-    if(empty($member_id)){
-        return 2; // Member not selected
-    }
-
-    // Check if the selected member exists in the members table
-    $check_member = $this->db->query("SELECT * FROM members WHERE id = $member_id");
-    if ($check_member->num_rows > 0) {
-        $data = " lastname = '$lastname' ";
-        $data .= ", firstname = '$firstname' ";
-        $data .= ", middlename = '$middlename' ";
-        $data .= ", address = '$address' ";
-        $data .= ", contact_no = '$contact_no' ";
-        $data .= ", email = '$email' ";
-        $data .= ", tax_id = '$tax_id' ";
-        $data .= ", member_id = $member_id ";
-
-        if (empty($id)) {
-            $save = $this->db->query("INSERT INTO borrowers SET " . $data);
-        } else {
-            $save = $this->db->query("UPDATE borrowers SET " . $data . " WHERE id=" . $id);
-        }
-
-        if ($save) {
-            return 1; // Success
-        } else {
-            return 0; // Failed to save borrower data
-        }
-    } else {
-        return 3; // Selected member not found
-    }
-}
+		extract($_POST);
+	
+		$member_id = isset($_POST['member_id']) ? $_POST['member_id'] : '';
+	
+		if(empty($member_id)){
+			return 2; // Member not selected
+		}
+	
+		// Use $_POST data directly instead of undefined variables
+		$lastname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
+		$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
+		$middlename = isset($_POST['middlename']) ? $_POST['middlename'] : '';
+		$address = isset($_POST['address']) ? $_POST['address'] : '';
+		$contact_no = isset($_POST['contact_no']) ? $_POST['contact_no'] : '';
+		$email = isset($_POST['email']) ? $_POST['email'] : '';
+		$tax_id = isset($_POST['tax_id']) ? $_POST['tax_id'] : '';
+	
+		// Insert borrower data into the database
+		$data = " lastname = '$lastname' ";
+		$data .= ", firstname = '$firstname' ";
+		$data .= ", middlename = '$middlename' ";
+		$data .= ", address = '$address' ";
+		$data .= ", contact_no = '$contact_no' ";
+		$data .= ", email = '$email' ";
+		$data .= ", tax_id = '$tax_id' ";
+		$data .= ", member_id = $member_id ";
+	
+		$save = $this->db->query("INSERT INTO borrowers SET " . $data);
+	
+		if ($save) {
+			return 1; // Success
+		} else {
+			return 0; // Failed to save borrower data
+		}
+	}
+	
 
 	function delete_borrower()
 	{
