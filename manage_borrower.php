@@ -1,6 +1,10 @@
 <?php include 'db_connect.php' ?>
 <?php 
-$members = $conn->query("SELECT * FROM members")->fetch_all();
+$members = $conn->query("SELECT m.*
+	FROM members m
+	LEFT JOIN borrowers b ON m.id = b.member_id
+	WHERE status = 1 AND b.member_id IS NULL
+")->fetch_all();
 if(isset($_GET['id'])){
 	$qry = $conn->query("SELECT * FROM borrowers where id=".$_GET['id']);
 	foreach($qry->fetch_array() as $k => $val){
@@ -17,37 +21,37 @@ if(isset($_GET['id'])){
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="" class="control-label">Last Name</label>
-						<input name="lastname" class="form-control" required="" value="<?php echo isset($lastname) ? $lastname : '' ?>">
+						<input name="lastname" class="form-control" required="" value="<?php echo isset($lastname) ? $lastname : '' ?>" readonly>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="">First Name</label>
-						<input name="firstname" class="form-control" required="" value="<?php echo isset($firstname) ? $firstname : '' ?>">
+						<input name="firstname" class="form-control" required="" value="<?php echo isset($firstname) ? $firstname : '' ?>"readonly>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="">Middle Name</label>
-						<input name="middlename" class="form-control" value="<?php echo isset($middlename) ? $middlename : '' ?>">
+						<input name="middlename" class="form-control" value="<?php echo isset($middlename) ? $middlename : '' ?>"readonly>
 					</div>
 				</div>
 			</div>
 			<div class="row form-group">
 				<div class="col-md-6">
 					<label for="">Address</label>
-					<textarea name="address" id="" cols="30" rows="2" class="form-control" required=""><?php echo isset($address) ? $address : '' ?></textarea>
+					<textarea name="address" id="" cols="30" rows="2" class="form-control" required="" readonly><?php echo isset($address) ? $address : '' ?></textarea>
 				</div>
 				<div class="col-md-5">
 					<div class="">
 						<label for="">Contact #</label>
-						<input type="text" class="form-control" name="contact_no" value="<?php echo isset($contact_no) ? $contact_no : '' ?>">
+						<input type="text" class="form-control" name="contact_no" value="<?php echo isset($contact_no) ? $contact_no : '' ?>" readonly>
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="">
 						<label for="">Email</label>
-						<input type="email" class="form-control" name="email" value="<?php echo isset($email) ? $email : '' ?>">
+						<input type="email" class="form-control" name="email" value="<?php echo isset($email) ? $email : '' ?>" readonly>
 					</div>
 				</div>
 			</div>
@@ -64,7 +68,7 @@ if(isset($_GET['id'])){
 				<div class="col-md-5">
 					<div class="">
 						<label for="">Tax ID</label>
-						<input type="text" class="form-control" name="tax_id" value="<?php echo isset($tax_id) ? $tax_id : '' ?>">
+						<input type="text" class="form-control" name="tax_id" value="<?php echo isset($tax_id) ? $tax_id : '' ?>" readonly>
 					</div>
 				</div>
 			</div>
