@@ -44,6 +44,12 @@ if(isset($_GET['id'])){
 						<input type="text" class="form-control" name="contact_no" value="<?php echo isset($contact_no) ? $contact_no : '' ?>">
 					</div>
 				</div>
+				<div class="col-md-5">
+					<div class="">
+						<label for="">Email</label>
+						<input type="email" class="form-control" name="email" value="<?php echo isset($email) ? $email : '' ?>">
+					</div>
+				</div>
 			</div>
 			<div class="row form-group">
 				<div class="col-md-6">
@@ -67,6 +73,11 @@ if(isset($_GET['id'])){
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#member_id').change(function() {
@@ -84,6 +95,7 @@ if(isset($_GET['id'])){
                             $('input[name="middlename"]').val(data.middlename).prop('readonly', true);
                             $('textarea[name="address"]').val(data.address).prop('readonly', true);
                             $('input[name="contact_no"]').val(data.contact_no).prop('readonly', true);
+							$('input[name="email"]').val(data.email).prop('readonly', true);
                             $('input[name="tax_id"]').val(data.tax_id).prop('readonly', true);
                         } else {
                             alert('Member details not found!');
@@ -97,34 +109,35 @@ if(isset($_GET['id'])){
                 $('input[name="middlename"]').val('').prop('readonly', false);
                 $('textarea[name="address"]').val('').prop('readonly', false);
                 $('input[name="contact_no"]').val('').prop('readonly', false);
+				$('input[name="email"]').val(data.email).prop('readonly', false);
                 $('input[name="tax_id"]').val('').prop('readonly', false);
             }
         });
+		$('#manage-borrower').submit(function(e){
+			e.preventDefault();
+			start_load();
+			$.ajax({
+				url: 'ajax.php?action=save_borrower',
+				method: 'POST',
+				data: $(this).serialize(),
+				success: function(resp){
+					if(resp == 1){
+						alert_toast("Borrower data successfully saved.","success");
+						setTimeout(function(e){
+							location.reload();
+						}, 1500);
+					} else {
+						alert_toast("Error saving data. Please try again.", "error");
+						console.log(resp); // Log the response for debugging
+					}
+				},
+				error: function(xhr, status, error) {
+					alert_toast("Error: " + error, "error");
+					console.log(xhr.responseText); // Log the detailed error message
+				}
+			});
+		});
     });
 
-    $('#manage-borrower').submit(function(e){
-        e.preventDefault();
-        start_load();
-        $.ajax({
-            url: 'ajax.php?action=save_borrower',
-            method: 'POST',
-            data: $(this).serialize(),
-            success: function(resp){
-                if(resp == 1){
-                    alert_toast("Borrower data successfully saved.","success");
-                    setTimeout(function(e){
-                        location.reload();
-                    }, 1500);
-                } else {
-                    alert_toast("Error saving data. Please try again.", "error");
-                    console.log(resp); // Log the response for debugging
-                }
-            },
-            error: function(xhr, status, error) {
-                alert_toast("Error: " + error, "error");
-                console.log(xhr.responseText); // Log the detailed error message
-            }
-        });
-    });
 </script>
 
