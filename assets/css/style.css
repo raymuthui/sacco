@@ -1621,8 +1621,8 @@ nav#sidebar {
     height: calc(100%);
     position: fixed;
     z-index: 99;
-    left: 30px;
-    width: 256px;
+    left: 0px;
+    width: 286px;
     font-size: 12px;
     top: 7.5em;
     padding: 10px 0 0 9px;
