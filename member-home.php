@@ -26,6 +26,9 @@ if (!$member) {
 
 $loan_qry = $conn->query("SELECT amount FROM loan_list WHERE member_id = " . $user_id);
 $loan_amount = $loan_qry->fetch_assoc();
+
+$loan__qry = $conn->query("SELECT penalty_accrued FROM loan_list WHERE member_id = " . $user_id);
+$loan_penalty = $loan__qry->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,9 +102,9 @@ $loan_amount = $loan_qry->fetch_assoc();
                     </div>
                     <div class="rounded-md bg-white m-2 p-2 w-full">
                         <p>Name: <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
-                        <p>Total Loan Amount: <?php echo $loan_amount ? $loan_amount : 0; ?></p>
+                        <p>Total Loan Amount: Ksh <?php echo $loan_amount['amount'] ? $loan_amount['amount'] : 0; ?></p>
                         <p>Total Investments:</p>
-                        <p>Total Penalty:</p>
+                        <p>Total Penalty: Ksh <?php echo $loan_penalty['penalty_accrued'] ? $loan_penalty['penalty_accrued'] : 0; ?></p>
                     </div>
                 </div>
             </div>
