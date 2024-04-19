@@ -38,7 +38,7 @@ $loan_penalty = $loan__qry->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script src="https://kit.fontawesome.com/872ee97990.js" crossorigin="anonymous"></script>
     <title>Member Home</title>
     <style>
         body {
@@ -84,9 +84,15 @@ $loan_penalty = $loan__qry->fetch_assoc();
                     <strong><p>Welcome to UTUMISHI Sacco, <?php echo $member['firstname'] ?>!</p></strong>
                 </div>
 
-                <div class="flex flex-row gap-2">
-                    <img class="" width="25px" height="25px" src="./assets/img/gear.png" alt="settings">
-                    <strong><p>Settings</p></strong>
+                <div class="flex flex-row gap-4">
+                    <div class="flex flex-row gap-2 col items-center">
+                        <img class="" width="25px" height="25px" src="./assets/img/gear.png" alt="settings">
+                        <strong><p>Settings</p></strong>
+                    </div>
+                    <a style="text-decoration: none;" href="ajax.php?action=logout"><div class="flex flex-row gap-2 col items-center">
+                        <i class="fa-solid fa-right-from-bracket" style="color: #FFC66C; font-size: 25px;"></i>
+                        <strong><p>Logout</p></strong>
+                    </div></a>
                 </div>
             </div>
         </nav>
