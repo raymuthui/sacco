@@ -139,27 +139,41 @@ class Action
 		$article_image_file = $_FILES['article_image']['name'];
 		$article_image_temp = $_FILES['article_image']['tmp_name'];
 	
-		// Move uploaded picture to a directory on the server
-		$upload_dir = 'uploads/';
-		move_uploaded_file($article_image_temp, $upload_dir . $article_image_file);
-	
-		// Insert or update news data into the database
-		$data = "article_title = '$article_title' ";
-		$data .= ", article_content = '$article_content' ";
-		$data .= ", article_image_path = '$upload_dir$article_image_file' "; // Store file path in the database
-	
-		if (empty($id)) {
-			$save = $this->db->query("INSERT INTO news SET " . $data);
+		// Move uploaded picture to a directory on the server if a new file is uploaded
+		if (!empty($article_image_file)) {
+			$upload_dir = 'uploads/';
+			move_uploaded_file($article_image_temp, $upload_dir . $article_image_file);
+			$article_image_path = $upload_dir . $article_image_file;
 		} else {
-			$save = $this->db->query("UPDATE news SET " . $data . " WHERE id=" . $id);
+			// If no new file is uploaded, do not update article_image_path
+			$article_image_path = null;
 		}
 	
+		// Use prepared statements to insert or update news data into the database
+		if (empty($id)) {
+			$stmt = $this->db->prepare("INSERT INTO news (article_title, article_content, article_image_path) VALUES (?, ?, ?)");
+			$stmt->bind_param("sss", $article_title, $article_content, $article_image_path);
+		} else {
+			$stmt = $this->db->prepare("UPDATE news SET article_title = ?, article_content = ?, article_image_path = ? WHERE id = ?");
+			$stmt->bind_param("sssi", $article_title, $article_content, $article_image_path, $id);
+		}
+	
+		// Execute the statement
+		$save = $stmt->execute();
+	
 		if ($save) {
-			return 1;
+			// Return 2 if action is update
+			if (!empty($id)) {
+				return 2;
+			} else {
+				return 1;
+			}
 		} else {
 			return 0;
 		}
 	}
+	
+	
 	
 	function delete_news()
 	{

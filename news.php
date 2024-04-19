@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Content</label>
-                                <textarea name="article_content" id="" cols="30" rows="2" class="form-control"></textarea>
+                                <textarea name="article_content" id="" cols="30" rows="10" class="form-control"></textarea>
                             </div>
                         </div>
 
@@ -91,7 +91,17 @@
     }
 
     td p {
-        margin: unset
+        margin: unset;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        text-wrap: wrap; /* Add word-wrap property to enable word wrapping */
+    }
+
+    .read-more {
+        color: blue;
+        cursor: pointer;
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -159,11 +169,6 @@
             var cat = $('#manage-news')
             cat.get(0).reset()
             cat.find("[name='id']").val($(this).attr('data-id'))
-            // Set the value of the article image input field only if it's not empty
-            var articleImagePath = $(this).attr('data-article_image');
-            if (articleImagePath != 'uploads/') {
-                cat.find("[name='article_image']").val(articleImagePath);
-            }
             cat.find("[name='article_title']").val($(this).attr('data-article_title'))
             cat.find("[name='article_content']").val($(this).attr('data-article_content'))
             end_load()
