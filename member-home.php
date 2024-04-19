@@ -29,6 +29,9 @@ $loan_amount = $loan_qry->fetch_assoc();
 
 $loan__qry = $conn->query("SELECT penalty_accrued FROM loan_list WHERE member_id = " . $user_id);
 $loan_penalty = $loan__qry->fetch_assoc();
+
+$news_qry = $conn->query("SELECT * FROM news");
+$news = $news_qry->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,41 +65,7 @@ $loan_penalty = $loan__qry->fetch_assoc();
 </head>
 
 <body>
-    <header class="flex-column sticky">
-        <nav class="navbar navbar-light" style="padding:0;">
-            <div class="container-fluid mt-2 mb-2">
-                <div class="col-lg-12 d-flex align-items-center justify-content-between">
-                    <div class="col-md-2 float-left" style="display: flex;">
-                        <div class="logo">
-                            <img src="assets/img/logo.png" width="320px">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 text-right text-dark">
-                        <strong><a href="https://www.enchanted-tech.com/" target="a_blank" class="text-dark">Contact Author : Enchanted Tech.</a></strong>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="flex flex-row justify-between px-12 py-4 w-full bg-[#f2efef]">
-                <div class="flex justify-item-start">
-                    <strong><p>Welcome to UTUMISHI Sacco, <?php echo $member['firstname'] ?>!</p></strong>
-                </div>
-
-                <div class="flex flex-row gap-4">
-                    <div class="flex flex-row gap-2 col items-center">
-                        <img class="" width="25px" height="25px" src="./assets/img/gear.png" alt="settings">
-                        <strong><p>Settings</p></strong>
-                    </div>
-                    <a style="text-decoration: none;" href="ajax.php?action=logout"><div class="flex flex-row gap-2 col items-center">
-                        <i class="fa-solid fa-right-from-bracket" style="color: #FFC66C; font-size: 25px;"></i>
-                        <strong><p>Logout</p></strong>
-                    </div></a>
-                </div>
-            </div>
-        </nav>
-    </header>
+  <?php include 'member-header.php' ?>
 
     <main class="d-flex flex-column px-12">
         <div class="d-flex flex-row justify-content-between pt-5 gap-5">
@@ -116,8 +85,18 @@ $loan_penalty = $loan__qry->fetch_assoc();
             </div>
             <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                 <h2 class="font-semibold text-xl">Upcoming Sacco News</h2>
-                <div class="h-100 w-100 bg-danger rounded-lg"></div>
-                <a href="news.html">View More</a>
+                <div class="d-flex flex-row bg-[#f2efef] rounded-lg">
+                    <div class="flex place-items-center m-2 p-2 rounded-md bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
+                        <img class="image-fluid" src="<?php echo $baseurl. '/' . $news['article_image_path'] ?>" alt="article pic">
+                    </div>
+                    <div class="rounded-md bg-white m-2 p-2 w-full">
+                        <p>Article Title: <?php echo $news['article_title'] ? $news['article_title'] : 'N/A'?></p>
+                        <p>Article Content: <?php echo $news['article_content'] ? $news['article_content'] : 'N/A'; ?></p>
+                        <p>Date Created: <?php echo $news['date_created'] ? $news['date_created'] : 'N/A'; ?></p>
+                    </div>
+                </div>
+                <br>
+                <a href="member-news.php">View More</a>
             </div>
         </div>
         <div class="row pt-7 h-50">

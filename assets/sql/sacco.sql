@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 19, 2024 at 10:56 AM
+-- Generation Time: Apr 19, 2024 at 01:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,34 +54,18 @@ CREATE TABLE `loan_list` (
   `purpose` text NOT NULL,
   `amount` double NOT NULL,
   `penalty_accrued` float DEFAULT NULL,
-  `plan_id` int(30) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0= request, 1= confrimed,2=released,3=complteted,4=denied\r\n',
   `date_released` datetime NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `loan_plan`
+-- Dumping data for table `loan_list`
 --
 
-CREATE TABLE `loan_plan` (
-  `id` int(30) NOT NULL,
-  `months` int(11) NOT NULL,
-  `interest_percentage` float NOT NULL,
-  `penalty_rate` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `loan_plan`
---
-
-INSERT INTO `loan_plan` (`id`, `months`, `interest_percentage`, `penalty_rate`) VALUES
-(1, 36, 8, 3),
-(2, 24, 5, 2),
-(3, 27, 6, 2),
-(6, 3, 5, 2);
+INSERT INTO `loan_list` (`id`, `member_id`, `ref_no`, `loan_type_id`, `purpose`, `amount`, `penalty_accrued`, `status`, `date_released`, `date_created`) VALUES
+(3, 13, '123', 2, 'Build a house', 200000, NULL, 2, '2024-04-19 11:33:21', '2024-04-19 04:33:58'),
+(4, 13, '472', 1, 'Start a business', 4300000, NULL, 2, '2024-04-19 12:16:08', '2024-04-19 05:16:46');
 
 -- --------------------------------------------------------
 
@@ -263,19 +247,29 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`id`, `firstname`, `middlename`, `lastname`, `contact_no`, `address`, `email`, `password`, `tax_id`, `status`, `id_front_path`, `id_back_path`, `profile_pic_path`) VALUES
-(1, 'ninjago', 'black', 'muchai', '654566653', '323443', 'muchaininja@turtles.com', NULL, '4264', 0, 'uploads/', 'uploads/', 'uploads/'),
-(2, 'johnte', 'fresh', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(3, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(4, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(5, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(6, 'john', 'doe', 'muchai', '', '42322', '', NULL, '', 0, 'uploads/', 'uploads/', 'uploads/'),
-(7, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(8, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(9, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(10, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(11, 'scriv', 'fkolch', 'thames', '6043042', '5043', 'scrikolch@gmail.com', NULL, '4214', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(12, 'claudia', 'joan', 'ruth', '6043042', '42322', 'plusher-s@icloud.com', NULL, '432932', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
 (13, 'Lennox', 'Kimathi', 'Kabo', '0731313123', 'Embakasi, Imara Daima', 'lennox@gmail.com', '12345', '56hy', 1, 'uploads/Mpesa..png', 'uploads/spiral-logo.png', 'uploads/spiral-logo.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `news`
+--
+
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL,
+  `article_image_path` varchar(250) NOT NULL,
+  `article_title` text NOT NULL,
+  `article_content` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `news`
+--
+
+INSERT INTO `news` (`id`, `article_image_path`, `article_title`, `article_content`, `date_created`) VALUES
+(3, 'uploads/_0a3a2967-ae5b-4647-9d84-ab54d7c503b2.jpeg', 'Unoma', 'The Don', '2024-04-19 10:58:38'),
+(25, 'uploads/sa1.jpeg', 'Welcome', 'Welcome to our marvelous sacco! It is an honor to have you in our pyramid scheme. Be ready to lose all your money to us! Cheers:)', '2024-04-19 11:25:29');
 
 -- --------------------------------------------------------
 
@@ -292,26 +286,6 @@ CREATE TABLE `payments` (
   `overdue` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=no , 1 = yes',
   `date_created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`id`, `loan_id`, `payee`, `amount`, `penalty_amount`, `overdue`, `date_created`) VALUES
-(1, 1, 'Kijana', 3600, 108, 1, '2022-05-27 14:06:18'),
-(2, 1, 'Ajay', 3600, 0, 0, '2022-05-27 14:06:21'),
-(3, 1, 'ajay', 3600, 0, 0, '2022-05-27 14:06:28'),
-(4, 1, '', 0, 0, 0, '2022-05-27 14:06:28'),
-(5, 1, '', 0, 0, 0, '2022-05-27 14:06:28'),
-(6, 1, '', 0, 0, 0, '2022-05-27 14:06:29'),
-(7, 1, '', 0, 0, 0, '2022-05-27 14:06:29'),
-(8, 1, '', 0, 0, 0, '2022-05-27 14:06:29'),
-(9, 1, '', 0, 0, 0, '2022-05-27 14:06:29'),
-(10, 2, '', 0, 0, 0, '2022-05-27 15:12:31'),
-(11, 2, '', 0, 0, 0, '2022-05-27 15:12:41'),
-(12, 2, '', 0, 0, 0, '2022-05-27 15:12:51'),
-(13, 2, '', 0, 0, 0, '2022-05-27 15:12:52'),
-(14, 2, '', 0, 0, 0, '2022-05-27 15:12:59');
 
 -- --------------------------------------------------------
 
@@ -353,13 +327,8 @@ ALTER TABLE `borrowers`
 --
 ALTER TABLE `loan_list`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_loan_member_id` (`member_id`);
-
---
--- Indexes for table `loan_plan`
---
-ALTER TABLE `loan_plan`
-  ADD PRIMARY KEY (`id`);
+  ADD KEY `fk_loan_member_id` (`member_id`),
+  ADD KEY `fk_loan_type_id` (`loan_type_id`);
 
 --
 -- Indexes for table `loan_schedules`
@@ -380,10 +349,17 @@ ALTER TABLE `members`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `payments`
 --
 ALTER TABLE `payments`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_loan_id` (`loan_id`);
 
 --
 -- Indexes for table `users`
@@ -405,13 +381,7 @@ ALTER TABLE `borrowers`
 -- AUTO_INCREMENT for table `loan_list`
 --
 ALTER TABLE `loan_list`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `loan_plan`
---
-ALTER TABLE `loan_plan`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `loan_schedules`
@@ -430,6 +400,12 @@ ALTER TABLE `loan_types`
 --
 ALTER TABLE `members`
   MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -457,7 +433,14 @@ ALTER TABLE `borrowers`
 -- Constraints for table `loan_list`
 --
 ALTER TABLE `loan_list`
-  ADD CONSTRAINT `fk_loan_member_id` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_loan_member_id` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_loan_type_id` FOREIGN KEY (`loan_type_id`) REFERENCES `loan_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `fk_loan_id` FOREIGN KEY (`loan_id`) REFERENCES `loan_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

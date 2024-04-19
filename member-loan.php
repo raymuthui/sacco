@@ -33,7 +33,7 @@ $loan_qry = $conn->query("SELECT ll.amount, ll.penalty_accrued, ll.ref_no, lt.ty
 $loan_info = array();
 
 // Loop through all of the user's loans
-while($row = $loan_qry->fetch_assoc()) {
+while ($row = $loan_qry->fetch_assoc()) {
     $loan_info[] = $row;
 }
 
@@ -48,68 +48,75 @@ while ($row = $loan_types->fetch_assoc()) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/872ee97990.js" crossorigin="anonymous"></script>
     <title>Loan Information</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Loan Information</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        My Loans
-                    </div>
-                    <div class="card-body">
-                        <?php
-                        // Loop through all the user's loans and display their details
-                        foreach ($loan_info as $loan) {
-                            ?>
-                            <h5 class="card-title">Reference No: <?php echo isset($loan['ref_no']) ? $loan['ref_no'] : 'N/A'; ?></h5>
-                            <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
-                            <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
-                            <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
-                            <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
-                            <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
-                            <hr>
+    <?php include 'member-header.php' ?>
+    <main class="container">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            My Loans
+                        </div>
+                        <div class="card-body">
                             <?php
-                        }
-                        ?>
+                            // Loop through all the user's loans and display their details
+                            foreach ($loan_info as $loan) {
+                            ?>
+                                <h5 class="card-title">Reference No: <?php echo isset($loan['ref_no']) ? $loan['ref_no'] : 'N/A'; ?></h5>
+                                <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
+                                <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
+                                <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
+                                <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
+                                <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
+                                <hr>
+                            <?php
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        Loan Types
-                    </div>
-                    <div class="card-body">
-                        <?php
-                        // Loop through all loan types and display their details
-                        foreach ($types_info as $type) {
-                            ?>
-                            <h5 class="card-title">Type Name: <?php echo $type['type_name']; ?></h5>
-                            <p class="card-text">Description: <?php echo $type['description']; ?></p>
-                            <p class="card-text">Miniumum Amount: <?php echo $type['min_amount']; ?></p>
-                            <p class="card-text">Maximum Amount: <?php echo $type['max_amount']; ?></p>
-                            <p class="card-text">Months: <?php echo $type['months']; ?></p>
-                            <p class="card-text">Interest Percentage: <?php echo $type['interest_percentage']; ?>%</p>
-                            <p class="card-text">Penalty Rate: <?php echo $type['penalty_rate']; ?>%</p>
-                            <hr>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Loan Types
+                        </div>
+                        <div class="card-body">
                             <?php
-                        }
-                        ?>
+                            // Loop through all loan types and display their details
+                            foreach ($types_info as $type) {
+                            ?>
+                                <h5 class="card-title">Type Name: <?php echo $type['type_name']; ?></h5>
+                                <p class="card-text">Description: <?php echo $type['description']; ?></p>
+                                <p class="card-text">Miniumum Amount: <?php echo $type['min_amount']; ?></p>
+                                <p class="card-text">Maximum Amount: <?php echo $type['max_amount']; ?></p>
+                                <p class="card-text">Months: <?php echo $type['months']; ?></p>
+                                <p class="card-text">Interest Percentage: <?php echo $type['interest_percentage']; ?>%</p>
+                                <p class="card-text">Penalty Rate: <?php echo $type['penalty_rate']; ?>%</p>
+                                <hr>
+                            <?php
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
