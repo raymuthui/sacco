@@ -113,9 +113,9 @@
               </div>
             </div>
             <div class="form-group">
-                <label for="profile_pic" class="control-label">Profile Picture</label>
-                <input type="file" id="profile_pic" name="profile_pic" class="form-control">
-              </div>
+              <label for="profile_pic" class="control-label">Profile Picture</label>
+              <input type="file" id="profile_pic" name="profile_pic" class="form-control">
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
@@ -147,8 +147,8 @@
       success: function(resp) {
         console.log('Response from server:', resp); //log the response
         if (resp == 1) {
-            // Redirect to success page
-            window.location.href = 'success_page.php'
+          // Redirect to success page
+          window.location.href = 'success_page.php'
         } else {
           alert("Submission failed. Please try again.");
           location.reload();

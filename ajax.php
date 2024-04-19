@@ -39,6 +39,16 @@ if($action == 'signup'){
 	if($save)
 		echo $save;
 }
+if($action == 'save_news'){
+	$save = $crud->save_news();
+	if($save)
+		echo $save;
+}
+if($action == 'delete_news'){
+	$save = $crud->delete_news();
+	if($save)
+		echo $save;
+}
 if($action == "save_settings"){
 	$save = $crud->save_settings();
 	if($save)

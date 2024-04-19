@@ -131,6 +131,48 @@ class Action
 		}
 	}
 
+	function save_news()
+	{
+		extract($_POST);
+	
+		// Handle picture upload
+		$article_image_file = $_FILES['article_image']['name'];
+		$article_image_temp = $_FILES['article_image']['tmp_name'];
+	
+		// Move uploaded picture to a directory on the server
+		$upload_dir = 'uploads/';
+		move_uploaded_file($article_image_temp, $upload_dir . $article_image_file);
+	
+		// Insert or update news data into the database
+		$data = "article_title = '$article_title' ";
+		$data .= ", article_content = '$article_content' ";
+		$data .= ", article_image_path = '$upload_dir$article_image_file' "; // Store file path in the database
+	
+		if (empty($id)) {
+			$save = $this->db->query("INSERT INTO news SET " . $data);
+		} else {
+			$save = $this->db->query("UPDATE news SET " . $data . " WHERE id=" . $id);
+		}
+	
+		if ($save) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+	function delete_news()
+	{
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM news where id = " . $id);
+		if ($delete) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+
 	function save_settings()
 	{
 		extract($_POST);
