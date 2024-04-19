@@ -23,6 +23,9 @@ if (!$member) {
     // Redirect or handle the case where member details are not found
     exit('Member details not found.');
 }
+
+$loan_qry = $conn->query("SELECT amount FROM loan_list WHERE member_id = " . $user_id);
+$loan_amount = $loan_qry->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -90,11 +93,16 @@ if (!$member) {
         <div class="d-flex flex-row justify-content-between pt-5 gap-5">
             <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                 <h2 class="font-semibold text-xl">Profile Overview</h2>
-                <div class="d-flex flex-column bg-[#f2efef] rounded-lg">
-                    <div class="flex place-items-center rounded-2xl border-solid m-2 border-blue-400" style="width: 150px; height: 150px;">
+                <div class="d-flex flex-row bg-[#f2efef] rounded-lg">
+                    <div class="flex place-items-center m-2 p-2 rounded-3xl bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
                         <img class="image-fluid" src="<?php echo $baseurl. '/' . $member['profile_pic_path'] ?>" alt="profile pic">
                     </div>
-                    <div></div>
+                    <div class="rounded-md bg-white m-2 p-2 w-full">
+                        <p>Name: <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
+                        <p>Total Loan Amount: <?php echo $loan_amount ? $loan_amount : 0; ?></p>
+                        <p>Total Investments:</p>
+                        <p>Total Penalty:</p>
+                    </div>
                 </div>
             </div>
             <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
