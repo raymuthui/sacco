@@ -24,8 +24,26 @@ if (!$member) {
     exit('Member details not found.');
 }
 
-$loan_qry = $conn->query("SELECT amount, penalty_accrued FROM loan_list WHERE member_id = " . $user_id);
-$loan_info = $loan_qry->fetch_assoc();
+// Fetch loan information with loan type details for the specific user
+$loan_qry = $conn->query("SELECT ll.amount, ll.penalty_accrued, ll.ref_no, lt.type_name, lt.description, lt.months, lt.interest_percentage 
+                            FROM loan_list ll 
+                            INNER JOIN loan_types lt ON ll.loan_type_id = lt.id 
+                            WHERE ll.member_id = " . $user_id);
+
+$loan_info = array();
+
+// Loop through all of the user's loans
+while($row = $loan_qry->fetch_assoc()) {
+    $loan_info[] = $row;
+}
+
+$loan_types = $conn->query("SELECT * FROM loan_types");
+$types_info = array(); // Initialize an array to store all loan types
+
+// Loop through all loan types and store them in the $types_info array
+while ($row = $loan_types->fetch_assoc()) {
+    $types_info[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,20 +61,47 @@ $loan_info = $loan_qry->fetch_assoc();
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        Loan Amount
+                        My Loans
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">$<?php echo isset($loan_info['amount']) ? $loan_info['amount'] : 'N/A'; ?></h5>
+                        <?php
+                        // Loop through all the user's loans and display their details
+                        foreach ($loan_info as $loan) {
+                            ?>
+                            <h5 class="card-title">Reference No: <?php echo isset($loan['ref_no']) ? $loan['ref_no'] : 'N/A'; ?></h5>
+                            <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
+                            <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
+                            <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
+                            <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
+                            <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
+                            <hr>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        Penalty Accrued
+                        Loan Types
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">$<?php echo isset($loan_info['penalty_accrued']) ? $loan_info['penalty_accrued'] : 'N/A'; ?></h5>
+                        <?php
+                        // Loop through all loan types and display their details
+                        foreach ($types_info as $type) {
+                            ?>
+                            <h5 class="card-title">Type Name: <?php echo $type['type_name']; ?></h5>
+                            <p class="card-text">Description: <?php echo $type['description']; ?></p>
+                            <p class="card-text">Miniumum Amount: <?php echo $type['min_amount']; ?></p>
+                            <p class="card-text">Maximum Amount: <?php echo $type['max_amount']; ?></p>
+                            <p class="card-text">Months: <?php echo $type['months']; ?></p>
+                            <p class="card-text">Interest Percentage: <?php echo $type['interest_percentage']; ?>%</p>
+                            <p class="card-text">Penalty Rate: <?php echo $type['penalty_rate']; ?>%</p>
+                            <hr>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>

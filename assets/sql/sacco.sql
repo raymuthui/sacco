@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 06, 2024 at 12:53 AM
+-- Generation Time: Apr 19, 2024 at 10:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,16 +36,9 @@ CREATE TABLE `borrowers` (
   `address` text NOT NULL,
   `email` varchar(50) NOT NULL,
   `tax_id` varchar(50) NOT NULL,
-  `date_created` int(11) NOT NULL
+  `member_id` int(30) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `borrowers`
---
-
-INSERT INTO `borrowers` (`id`, `firstname`, `middlename`, `lastname`, `contact_no`, `address`, `email`, `tax_id`, `date_created`) VALUES
-(1, 'Ni', 'Scam', 'Mapenzi', '9090909090', 'Rockport', 'scam@gmail.com', 'UIOJK23423', 0),
-(2, 'Eugene', 'Wamalwa', 'Kijana', '8080808080', 'Homabeiiii', 'kijana@gmail.com', 'JKL424gk', 0);
 
 -- --------------------------------------------------------
 
@@ -55,24 +48,17 @@ INSERT INTO `borrowers` (`id`, `firstname`, `middlename`, `lastname`, `contact_n
 
 CREATE TABLE `loan_list` (
   `id` int(30) NOT NULL,
+  `member_id` int(30) DEFAULT NULL,
   `ref_no` varchar(50) NOT NULL,
   `loan_type_id` int(30) NOT NULL,
-  `borrower_id` int(30) NOT NULL,
   `purpose` text NOT NULL,
   `amount` double NOT NULL,
+  `penalty_accrued` float DEFAULT NULL,
   `plan_id` int(30) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0= request, 1= confrimed,2=released,3=complteted,4=denied\r\n',
   `date_released` datetime NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `loan_list`
---
-
-INSERT INTO `loan_list` (`id`, `ref_no`, `loan_type_id`, `borrower_id`, `purpose`, `amount`, `plan_id`, `status`, `date_released`, `date_created`) VALUES
-(1, '80810623', 3, 1, 'Personal Loan as per request.', 120000, 1, 2, '2022-05-27 10:36:00', '2022-05-27 14:06:01'),
-(2, '42409268', 4, 2, 'FOR WEDDING PROGRAM', 5500000, 5, 2, '2022-05-27 11:42:00', '2022-05-27 15:12:20');
 
 -- --------------------------------------------------------
 
@@ -94,7 +80,8 @@ CREATE TABLE `loan_plan` (
 INSERT INTO `loan_plan` (`id`, `months`, `interest_percentage`, `penalty_rate`) VALUES
 (1, 36, 8, 3),
 (2, 24, 5, 2),
-(3, 27, 6, 2);
+(3, 27, 6, 2),
+(6, 3, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -231,19 +218,23 @@ INSERT INTO `loan_schedules` (`id`, `loan_id`, `date_due`) VALUES
 CREATE TABLE `loan_types` (
   `id` int(30) NOT NULL,
   `type_name` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `min_amount` float NOT NULL,
+  `max_amount` float NOT NULL,
+  `months` int(11) NOT NULL,
+  `interest_percentage` float NOT NULL,
+  `penalty_rate` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `loan_types`
 --
 
-INSERT INTO `loan_types` (`id`, `type_name`, `description`) VALUES
-(1, 'Small Business', 'Small Business Loans'),
-(2, 'Mortgages', 'Mortgages'),
-(3, 'Personal Loans', 'Personal Loans'),
-(4, 'Gold Loan', 'Loan by taking gold as Mortgage'),
-(5, '', '');
+INSERT INTO `loan_types` (`id`, `type_name`, `description`, `min_amount`, `max_amount`, `months`, `interest_percentage`, `penalty_rate`) VALUES
+(1, 'Small Business', 'Small Business Loans', 10000, 1000000, 36, 8, 3),
+(2, 'Mortgages', 'Mortgages', 50000, 5000000, 24, 5, 2),
+(3, 'Personal Loans', 'Personal Loans', 2000, 200000, 27, 6, 2),
+(6, 'Silver Loan', 'This is a silver loan', 150000, 10500000, 12, 10, 5);
 
 -- --------------------------------------------------------
 
@@ -284,7 +275,7 @@ INSERT INTO `members` (`id`, `firstname`, `middlename`, `lastname`, `contact_no`
 (10, 'john', 'doe', 'muchai', '070000000', '42322', 'johndoe@doe.com', NULL, '176382', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
 (11, 'scriv', 'fkolch', 'thames', '6043042', '5043', 'scrikolch@gmail.com', NULL, '4214', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
 (12, 'claudia', 'joan', 'ruth', '6043042', '42322', 'plusher-s@icloud.com', NULL, '432932', 0, 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png', 'uploads/Screenshot from 2024-04-05 03-13-56.png'),
-(13, 'Lennox', 'Kimathi', 'Kabo', '0731313123', 'Embakasi, Imara Daima', 'lennox@gmail.com', '12345', '56hy', 1, 'uploads/Mpesa..png', 'uploads/spiral-logo.png', 'uploads/spiral-logo (1).png');
+(13, 'Lennox', 'Kimathi', 'Kabo', '0731313123', 'Embakasi, Imara Daima', 'lennox@gmail.com', '12345', '56hy', 1, 'uploads/Mpesa..png', 'uploads/spiral-logo.png', 'uploads/spiral-logo.png');
 
 -- --------------------------------------------------------
 
@@ -330,9 +321,7 @@ INSERT INTO `payments` (`id`, `loan_id`, `payee`, `amount`, `penalty_amount`, `o
 
 CREATE TABLE `users` (
   `id` int(30) NOT NULL,
-  `doctor_id` int(30) NOT NULL,
   `name` varchar(200) NOT NULL,
-  `address` text NOT NULL,
   `contact` text NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(200) NOT NULL,
@@ -343,8 +332,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `doctor_id`, `name`, `address`, `contact`, `username`, `password`, `type`) VALUES
-(1, 0, 'Administrator', 'Kenya', '', 'borelennox@gmail.com', 'admin', 1);
+INSERT INTO `users` (`id`, `name`, `contact`, `username`, `password`, `type`) VALUES
+(1, 'Administrator', '0700000000', 'borelennox@gmail.com', 'admin', 1),
+(2, 'Lennox Kabo', '0731313123', 'lexx', '12345', 1),
+(3, 'Joan', '0712345678', 'jojo', '123456', 2);
 
 --
 -- Indexes for dumped tables
@@ -354,13 +345,15 @@ INSERT INTO `users` (`id`, `doctor_id`, `name`, `address`, `contact`, `username`
 -- Indexes for table `borrowers`
 --
 ALTER TABLE `borrowers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_member_id` (`member_id`);
 
 --
 -- Indexes for table `loan_list`
 --
 ALTER TABLE `loan_list`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_loan_member_id` (`member_id`);
 
 --
 -- Indexes for table `loan_plan`
@@ -406,7 +399,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `borrowers`
 --
 ALTER TABLE `borrowers`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `loan_list`
@@ -418,7 +411,7 @@ ALTER TABLE `loan_list`
 -- AUTO_INCREMENT for table `loan_plan`
 --
 ALTER TABLE `loan_plan`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `loan_schedules`
@@ -430,7 +423,7 @@ ALTER TABLE `loan_schedules`
 -- AUTO_INCREMENT for table `loan_types`
 --
 ALTER TABLE `loan_types`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `members`
@@ -448,7 +441,23 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `borrowers`
+--
+ALTER TABLE `borrowers`
+  ADD CONSTRAINT `fk_member_id` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `loan_list`
+--
+ALTER TABLE `loan_list`
+  ADD CONSTRAINT `fk_loan_member_id` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
