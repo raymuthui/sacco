@@ -103,7 +103,7 @@ $loan_penalty = $loan__qry->fetch_assoc();
             <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                 <h2 class="font-semibold text-xl">Profile Overview</h2>
                 <div class="d-flex flex-row bg-[#f2efef] rounded-lg">
-                    <div class="flex place-items-center m-2 p-2 rounded-3xl bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
+                    <div class="flex place-items-center m-2 p-2 rounded-md bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
                         <img class="image-fluid" src="<?php echo $baseurl. '/' . $member['profile_pic_path'] ?>" alt="profile pic">
                     </div>
                     <div class="rounded-md bg-white m-2 p-2 w-full">
