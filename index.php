@@ -11,17 +11,19 @@
 
 
   <?php
+  include('db_connect.php');
   session_start();
   if (!isset($_SESSION['login_id']))
     header('location:login.php');
   include('./header.php');
   // include('./auth.php'); 
   $user_id = $_SESSION['login_id'];
-  // $qry = $conn->query("SELECT * FROM users WHERE id = " . $user_id);
-  // $user = $qry->fetch_assoc();
-  // if(!$user){
-  //   header('location:login.php');
-  // }
+  $qry = $conn->query("SELECT * FROM users WHERE id = " . $user_id);
+  $user = $qry->fetch_assoc();
+  if(!$user){
+    session_destroy();
+    header('location:login.php');
+  }
   ?>
 
 </head>
