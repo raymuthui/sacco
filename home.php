@@ -6,8 +6,8 @@
 <div class="container-fluid">
 
     <div class="col-lg-12">
-        <div class="card dashboard">
-            <hr>
+        <div class="card dashboard p-4">
+            <hr style="padding: 10px;">
             <div class="row ml-2 mr-2">
                 <div class="col-md-4">
                     <div class="card bg-primary text-white mb-3">
