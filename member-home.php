@@ -139,7 +139,7 @@ $loan_penalty = $loan__qry->fetch_assoc();
                 <div class="bg-white rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                     <h2 class="font-semibold text-xl">Loans and Repayment</h2>
                     <div class="h-100 w-100 bg-danger rounded-lg"></div>
-                    <a href="loans.html">View More</a>
+                    <a href="member-loan.php">View More</a>
                 </div>
             </div>
         </div>
