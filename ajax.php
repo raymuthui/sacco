@@ -74,16 +74,16 @@ if($action == "delete_loan_type"){
 // 	if($save)
 // 		echo $save;
 // }
-if($action == "save_borrower"){
-	$save = $crud->save_borrower();
-	if($save)
-		echo $save;
-}
-if($action == "delete_borrower"){
-	$save = $crud->delete_borrower();
-	if($save)
-		echo $save;
-}
+// if($action == "save_borrower"){
+// 	$save = $crud->save_borrower();
+// 	if($save)
+// 		echo $save;
+// }
+// if($action == "delete_borrower"){
+// 	$save = $crud->delete_borrower();
+// 	if($save)
+// 		echo $save;
+// }
 if ($action == "fetch_member_details") {
     $fetch = $crud->fetch_member_details();
     if ($fetch) {
@@ -96,6 +96,13 @@ if($action == "save_loan"){
 	$save = $crud->save_loan();
 	if($save)
 		echo $save;
+}
+if ($_GET['action'] == 'get_loan_types') {
+	include 'db_connect.php';
+	$loan_types_query = $conn->query("SELECT * FROM loan_types"); 
+	$loan_types = $loan_types_query->fetch_all(MYSQLI_ASSOC);
+	echo json_encode($loan_types);
+	exit;
 }
 if($action == "delete_loan"){
 	$save = $crud->delete_loan();

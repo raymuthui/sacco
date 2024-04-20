@@ -67,6 +67,7 @@ while ($row = $loan_types->fetch_assoc()) {
                     <div class="card">
                         <div class="card-header">
                             My Loans
+                            <button class="btn btn-primary col-md-3 float-right" type="button" id="new_application"><i class="fa fa-plus"></i> Create New Application</button>
                         </div>
                         <div class="card-body">
                             <?php
@@ -112,11 +113,102 @@ while ($row = $loan_types->fetch_assoc()) {
                 </div>
             </div>
         </div>
+            <!-- Modal for New Loan Application -->
+        <div class="modal fade" id="newLoanModal" tabindex="-1" role="dialog" aria-labelledby="newLoanModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newLoanModalLabel">New Loan Application</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="loan-application-form">
+                            <div class="form-group">
+                                <label for="loanType">Loan Type</label>
+                                <select class="form-control" id="loanType" name="loan_type_id">
+                                    <!-- Options will be populated dynamically using PHP -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Loan Amount</label>
+                                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter loan amount">
+                            </div>
+                            <div class="form-group">
+                                <label for="purpose">Purpose</label>
+                                <textarea class="form-control" id="purpose" name="purpose" rows="3"></textarea>
+                            </div>
+                            <!-- Hidden input field for member_id -->
+                            <input type="hidden" name="member_id" value="<?php echo $user_id; ?>">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="submitLoan">Submit Application</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Button click event to open the new loan modal
+            $('#new_application').click(function () {
+                $('#newLoanModal').modal('show');
+                // Fetch loan types dynamically and populate the select input
+                $.ajax({
+                    url: 'ajax.php?action=get_loan_types',
+                    method: 'GET',
+                    success: function (response) {
+                        try {
+                            var types = JSON.parse(response);
+                            var options = '';
+                            types.forEach(function (type) {
+                                options += '<option value="' + type.id + '">' + type.type_name + '</option>';
+                            });
+                            $('#loanType').html(options);
+                        } catch (error) {
+                            console.error('Error parsing JSON:', error);
+                            // Handle the error, e.g., display a message to the user or log it
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        // Handle the AJAX error, e.g., display a message to the user or log it
+                    }
+                });
+
+            });
+
+            // Submit loan application form
+            $('#submitLoan').click(function () {
+                var formData = $('#loan-application-form').serialize();
+                $.ajax({
+                    url: 'ajax.php?action=save_loan',
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response == 1) {
+                            alert('Loan application submitted successfully.');
+                            $('#newLoanModal').modal('hide');
+                            // Refresh or update loan information display here
+                            setTimeout(function(){
+                                location.reload();
+                            },1500)
+                        } else {
+                            alert('Failed to submit loan application.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

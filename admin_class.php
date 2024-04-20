@@ -267,52 +267,52 @@ class Action
 	// 	if ($delete)
 	// 		return 1;
 	// }
-	function save_borrower()
-	{
-		extract($_POST);
+	// function save_borrower()
+	// {
+	// 	extract($_POST);
 	
-		$member_id = isset($_POST['member_id']) ? $_POST['member_id'] : '';
+	// 	$member_id = isset($_POST['member_id']) ? $_POST['member_id'] : '';
 	
-		if(empty($member_id)){
-			return 2; // Member not selected
-		}
+	// 	if(empty($member_id)){
+	// 		return 2; // Member not selected
+	// 	}
 	
-		// Use $_POST data directly instead of undefined variables
-		$lastname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
-		$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
-		$middlename = isset($_POST['middlename']) ? $_POST['middlename'] : '';
-		$address = isset($_POST['address']) ? $_POST['address'] : '';
-		$contact_no = isset($_POST['contact_no']) ? $_POST['contact_no'] : '';
-		$email = isset($_POST['email']) ? $_POST['email'] : '';
-		$tax_id = isset($_POST['tax_id']) ? $_POST['tax_id'] : '';
+	// 	// Use $_POST data directly instead of undefined variables
+	// 	$lastname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
+	// 	$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
+	// 	$middlename = isset($_POST['middlename']) ? $_POST['middlename'] : '';
+	// 	$address = isset($_POST['address']) ? $_POST['address'] : '';
+	// 	$contact_no = isset($_POST['contact_no']) ? $_POST['contact_no'] : '';
+	// 	$email = isset($_POST['email']) ? $_POST['email'] : '';
+	// 	$tax_id = isset($_POST['tax_id']) ? $_POST['tax_id'] : '';
 	
-		// Insert borrower data into the database
-		$data = " lastname = '$lastname' ";
-		$data .= ", firstname = '$firstname' ";
-		$data .= ", middlename = '$middlename' ";
-		$data .= ", address = '$address' ";
-		$data .= ", contact_no = '$contact_no' ";
-		$data .= ", email = '$email' ";
-		$data .= ", tax_id = '$tax_id' ";
-		$data .= ", member_id = $member_id ";
+	// 	// Insert borrower data into the database
+	// 	$data = " lastname = '$lastname' ";
+	// 	$data .= ", firstname = '$firstname' ";
+	// 	$data .= ", middlename = '$middlename' ";
+	// 	$data .= ", address = '$address' ";
+	// 	$data .= ", contact_no = '$contact_no' ";
+	// 	$data .= ", email = '$email' ";
+	// 	$data .= ", tax_id = '$tax_id' ";
+	// 	$data .= ", member_id = $member_id ";
 	
-		$save = $this->db->query("INSERT INTO borrowers SET " . $data);
+	// 	$save = $this->db->query("INSERT INTO borrowers SET " . $data);
 	
-		if ($save) {
-			return 1; // Success
-		} else {
-			return 0; // Failed to save borrower data
-		}
-	}
+	// 	if ($save) {
+	// 		return 1; // Success
+	// 	} else {
+	// 		return 0; // Failed to save borrower data
+	// 	}
+	// }
 	
 
-	function delete_borrower()
-	{
-		extract($_POST);
-		$delete = $this->db->query("DELETE FROM borrowers where id = " . $id);
-		if ($delete)
-			return 1;
-	}
+	// function delete_borrower()
+	// {
+	// 	extract($_POST);
+	// 	$delete = $this->db->query("DELETE FROM borrowers where id = " . $id);
+	// 	if ($delete)
+	// 		return 1;
+	// }
 	function fetch_member_details()
 	{
 		extract($_POST);
@@ -333,59 +333,84 @@ class Action
 	}
 	function save_loan()
 	{
-		extract($_POST);
-		$data = " borrower_id = $borrower_id ";
-		$data .= " , loan_type_id = '$loan_type_id' ";
-		$data .= " , plan_id = '$plan_id' ";
-		$data .= " , amount = '$amount' ";
-		$data .= " , purpose = '$purpose' ";
-		if (isset($status)) {
-			$data .= " , status = '$status' ";
-			if ($status == 2) {
-				$plan = $this->db->query("SELECT * FROM loan_plan where id = $plan_id ")->fetch_array();
-				for ($i = 1; $i <= $plan['months']; $i++) {
-					$date = date("Y-m-d", strtotime(date("Y-m-d") . " +" . $i . " months"));
-					$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id and date(date_due) ='$date'  ");
-					if ($chk->num_rows > 0) {
-						$ls_id = $chk->fetch_array()['id'];
-						$this->db->query("UPDATE loan_schedules set loan_id = $id, date_due ='$date' where id = $ls_id ");
-					} else {
-						$this->db->query("INSERT INTO loan_schedules set loan_id = $id, date_due ='$date' ");
-						$ls_id = $this->db->insert_id;
-					}
-					$sid[] = $ls_id;
-				}
-				$sid = implode(",", $sid);
-				$this->db->query("DELETE FROM loan_schedules where loan_id = $id and id not in ($sid) ");
-				$data .= " , date_released = '" . date("Y-m-d H:i") . "' ";
-			} else {
-				$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id")->num_rows;
-				if ($chk > 0) {
-					$thi->db->query("DELETE FROM loan_schedules where loan_id = $id ");
-				}
-			}
-		}
-		if (empty($id)) {
-			$ref_no = mt_rand(1, 99999999);
-			$i = 1;
+		// Check if all required fields are present in $_POST
+		// $required_fields = ['member_id', 'loan_type_id', 'amount', 'purpose'];
+		// foreach ($required_fields as $field) {
+		// 	if (!isset($_POST[$field]) || empty($_POST[$field])) {
+		// 		return "Error: Required field '$field' is missing.";
+		// 	}
+		// }
 
-			while ($i == 1) {
-				$check = $this->db->query("SELECT * FROM loan_list where ref_no ='$ref_no' ")->num_rows;
-				if ($check > 0) {
-					$ref_no = mt_rand(1, 99999999);
+		extract($_POST);
+		// Check if member_id is set in the $_POST array
+		if (isset($_POST['member_id'])) {
+			// Extract POST data
+			extract($_POST);
+			// Assign member_id from POST data
+			$member_id = $_POST['member_id'];
+			// Proceed with other operations...
+			$data = " member_id = $member_id ";
+			$data .= " , loan_type_id = '$loan_type_id' ";
+			$data .= " , amount = '$amount' ";
+			$data .= " , purpose = '$purpose' ";
+			if (isset($status)) {
+				$data .= " , status = '$status' ";
+				if ($status == 2) {
+					// Assuming 'id' is the correct field name for the loan ID
+					$plan = $this->db->query("SELECT * FROM loan_list where id = $id")->fetch_array();
+					for ($i = 1; $i <= $plan['months']; $i++) {
+						$date = date("Y-m-d", strtotime(date("Y-m-d") . " +" . $i . " months"));
+						$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id and date(date_due) ='$date'  ");
+						if ($chk->num_rows > 0) {
+							$ls_id = $chk->fetch_array()['id'];
+							$this->db->query("UPDATE loan_schedules set loan_id = $id, date_due ='$date' where id = $ls_id ");
+						} else {
+							$this->db->query("INSERT INTO loan_schedules set loan_id = $id, date_due ='$date' ");
+							$ls_id = $this->db->insert_id;
+						}
+						$sid[] = $ls_id;
+					}
+					$sid = implode(",", $sid);
+					$this->db->query("DELETE FROM loan_schedules where loan_id = $id and id not in ($sid) ");
+					$data .= " , date_released = '" . date("Y-m-d H:i") . "' ";
 				} else {
-					$i = 0;
+					$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id")->num_rows;
+					if ($chk > 0) {
+						$this->db->query("DELETE FROM loan_schedules where loan_id = $id ");
+					}
 				}
 			}
-			$data .= " , ref_no = '$ref_no' ";
+			if (empty($id)) {
+				$ref_no = mt_rand(1, 99999999);
+				$i = 1;
+				while ($i == 1) {
+					$check = $this->db->query("SELECT * FROM loan_list where ref_no ='$ref_no' ")->num_rows;
+					if ($check > 0) {
+						$ref_no = mt_rand(1, 99999999);
+					} else {
+						$i = 0;
+					}
+				}
+				$data .= " , ref_no = '$ref_no' ";
+			}
+			if (empty($id)) {
+				// Assuming 'loan_list' is the correct table name
+				$save = $this->db->query("INSERT INTO loan_list set " . $data);
+			} else {
+				$save = $this->db->query("UPDATE loan_list set " . $data . " where id=" . $id);
+			}
+			if ($save) {
+				return 1;
+			} else {
+				return "Error: Failed to save loan. " . mysqli_error($this->db);
+			}
+		} else {
+			// Handle case where member_id is not set
+			return "Error: Required data missing"; // or any appropriate error code
 		}
-		if (empty($id))
-			$save = $this->db->query("INSERT INTO loan_list set " . $data);
-		else
-			$save = $this->db->query("UPDATE loan_list set " . $data . " where id=" . $id);
-		if ($save)
-			return 1;
+		
 	}
+
 	function delete_loan()
 	{
 		extract($_POST);
