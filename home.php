@@ -69,8 +69,15 @@
                                     <div class="text-white-75 ">Borrowers</div>
                                     <div class="text-lg font-weight-bold">
                                         <?php
-                                        $borrowers = $conn->query("SELECT * FROM borrowers");
-                                        echo $borrowers->num_rows > 0 ? $borrowers->num_rows : "0";
+                                        // Assuming $conn is your database connection object
+                                        $borrowers_query = $conn->query("SELECT COUNT(DISTINCT member_id) AS num_borrowers FROM loan_list");
+                                        if ($borrowers_query) {
+                                            $borrowers_data = $borrowers_query->fetch_assoc();
+                                            $num_borrowers = $borrowers_data['num_borrowers'];
+                                            echo $num_borrowers;
+                                        } else {
+                                            echo "Error fetching data.";
+                                        }
                                         ?>
 
                                     </div>
