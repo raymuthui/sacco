@@ -334,81 +334,86 @@ class Action
 	function save_loan()
 	{
 		// Check if all required fields are present in $_POST
-		// $required_fields = ['member_id', 'loan_type_id', 'amount', 'purpose'];
-		// foreach ($required_fields as $field) {
-		// 	if (!isset($_POST[$field]) || empty($_POST[$field])) {
-		// 		return "Error: Required field '$field' is missing.";
-		// 	}
-		// }
+		if (!isset($_POST['member_id']) || empty($_POST['member_id']) ||
+			!isset($_POST['loan_type_id']) || empty($_POST['loan_type_id']) ||
+			!isset($_POST['amount']) || empty($_POST['amount']) ||
+			!isset($_POST['purpose']) || empty($_POST['purpose']) ||
+			!isset($_POST['status']) || empty($_POST['status'])) {
+			return "Error: Required data missing.";
+		}
 
+		// Extract POST data
 		extract($_POST);
-		// Check if member_id is set in the $_POST array
-		if (isset($_POST['member_id'])) {
-			// Extract POST data
-			extract($_POST);
-			// Assign member_id from POST data
-			$member_id = $_POST['member_id'];
+
+		// Assign member_id from POST data
+		$member_id = $_POST['member_id'];
+
+		// Fetch loan type details including the months value
+		$loan_type_qry = $this->db->query("SELECT * FROM loan_types WHERE id = $loan_type_id");
+		if ($loan_type_qry->num_rows > 0) {
+			$loan_type = $loan_type_qry->fetch_assoc();
+			$months = $loan_type['months'];
+
 			// Proceed with other operations...
 			$data = " member_id = $member_id ";
-			$data .= " , loan_type_id = '$loan_type_id' ";
-			$data .= " , amount = '$amount' ";
-			$data .= " , purpose = '$purpose' ";
-			if (isset($status)) {
-				$data .= " , status = '$status' ";
-				if ($status == 2) {
-					// Assuming 'id' is the correct field name for the loan ID
-					$plan = $this->db->query("SELECT * FROM loan_list where id = $id")->fetch_array();
-					for ($i = 1; $i <= $plan['months']; $i++) {
+			$data .= ", loan_type_id = '$loan_type_id' ";
+			$data .= ", amount = '$amount' ";
+			$data .= ", purpose = '$purpose' ";
+			$data .= ", status = '$status' ";
+
+			if ($status == 2) {
+				// Assuming 'id' is the correct field name for the loan ID
+				$plan = $this->db->query("SELECT * FROM loan_list WHERE id = $id")->fetch_assoc();
+				if ($plan) {
+					for ($i = 1; $i <= $months; $i++) {
 						$date = date("Y-m-d", strtotime(date("Y-m-d") . " +" . $i . " months"));
-						$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id and date(date_due) ='$date'  ");
+						$chk = $this->db->query("SELECT * FROM loan_schedules WHERE loan_id = $id AND date(date_due) = '$date'");
 						if ($chk->num_rows > 0) {
-							$ls_id = $chk->fetch_array()['id'];
-							$this->db->query("UPDATE loan_schedules set loan_id = $id, date_due ='$date' where id = $ls_id ");
+							$ls_id = $chk->fetch_assoc()['id'];
+							$this->db->query("UPDATE loan_schedules SET loan_id = $id, date_due = '$date' WHERE id = $ls_id");
 						} else {
-							$this->db->query("INSERT INTO loan_schedules set loan_id = $id, date_due ='$date' ");
+							$this->db->query("INSERT INTO loan_schedules SET loan_id = $id, date_due = '$date'");
 							$ls_id = $this->db->insert_id;
 						}
 						$sid[] = $ls_id;
 					}
-					$sid = implode(",", $sid);
-					$this->db->query("DELETE FROM loan_schedules where loan_id = $id and id not in ($sid) ");
-					$data .= " , date_released = '" . date("Y-m-d H:i") . "' ";
-				} else {
-					$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id")->num_rows;
-					if ($chk > 0) {
-						$this->db->query("DELETE FROM loan_schedules where loan_id = $id ");
+					if (!empty($sid)) {
+						$sid_str = implode(",", $sid);
+						$this->db->query("DELETE FROM loan_schedules WHERE loan_id = $id AND id NOT IN ($sid_str)");
+						$data .= ", date_released = NOW() ";
 					}
 				}
+			} else {
+				$this->db->query("DELETE FROM loan_schedules WHERE loan_id = $id");
 			}
+
 			if (empty($id)) {
 				$ref_no = mt_rand(1, 99999999);
-				$i = 1;
-				while ($i == 1) {
-					$check = $this->db->query("SELECT * FROM loan_list where ref_no ='$ref_no' ")->num_rows;
+				do {
+					$check = $this->db->query("SELECT * FROM loan_list WHERE ref_no = '$ref_no'")->num_rows;
 					if ($check > 0) {
 						$ref_no = mt_rand(1, 99999999);
 					} else {
-						$i = 0;
+						break;
 					}
-				}
-				$data .= " , ref_no = '$ref_no' ";
+				} while (true);
+				$data .= ", ref_no = '$ref_no' ";
 			}
+
 			if (empty($id)) {
-				// Assuming 'loan_list' is the correct table name
-				$save = $this->db->query("INSERT INTO loan_list set " . $data);
+				$save = $this->db->query("INSERT INTO loan_list SET " . $data);
 			} else {
-				$save = $this->db->query("UPDATE loan_list set " . $data . " where id=" . $id);
+				$save = $this->db->query("UPDATE loan_list SET " . $data . " WHERE id = $id");
 			}
+
 			if ($save) {
 				return 1;
 			} else {
-				return "Error: Failed to save loan. " . mysqli_error($this->db);
+				return "Error: Failed to save loan. " . $this->db->error;
 			}
 		} else {
-			// Handle case where member_id is not set
-			return "Error: Required data missing"; // or any appropriate error code
+			return "Error: Loan type details not found";
 		}
-		
 	}
 
 	function delete_loan()

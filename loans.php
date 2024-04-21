@@ -33,7 +33,7 @@
                         $i = 1;
 
                         // Fetch all loans along with member details
-                        $qry = $conn->query("SELECT l.*, m.firstname, m.middlename, m.lastname, m.contact_no, m.address, lt.interest_percentage, lt.penalty_rate, lt.months
+                        $qry = $conn->query("SELECT l.*, m.firstname, m.middlename, m.lastname, m.contact_no, m.address, lt.type_name, lt.interest_percentage, lt.penalty_rate, lt.months
                                                 FROM loan_list l 
                                                 INNER JOIN members m ON l.member_id = m.id 
 												INNER JOIN loan_types lt ON l.loan_type_id = lt.id
@@ -51,21 +51,22 @@
                             <tr>
                                 <td class="text-center"><?php echo $i++ ?></td>
                                 <td>
-                                    <p>Name :<b><?php echo $row['firstname'] . ' ' . $row['middlename'] . ' ' . $row['lastname'] ?></b></p>
-                                    <p>Contact # :<b><?php echo $row['contact_no'] ?></b></p>
-                                    <p>Address :<b><?php echo $row['address'] ?></b></p>
+                                    <p>Name: <b><?php echo $row['firstname'] . ' ' . $row['middlename'] . ' ' . $row['lastname'] ?></b></p>
+                                    <p>Contact #: <b><?php echo $row['contact_no'] ?></b></p>
+                                    <p>Address: <b><?php echo $row['address'] ?></b></p>
                                 </td>
                                 <td>
-                                    <p>Reference :<b><?php echo $row['ref_no'] ?></b></p>
+                                    <p>Reference: <b><?php echo $row['ref_no'] ?></b></p>
                                     <!-- Add other loan details as needed -->
-									<p>Loan type :<b><?php echo $row['type_name'] ?></b></p>
-									<p>Amount :<b><?php echo $row['amount'] ?></b></p>
-                                    <p>Total Payable Amount :<b><?php echo number_format($total_payable, 2) ?></b></p>
+									<p>Loan type: <b><?php echo $row['type_name'] ?></b></p>
+									<p>Amount: <b><?php echo $row['amount'] ?></b></p>
+                                    <p>Total Payable Amount: <b><?php echo number_format($total_payable, 2) ?></b></p>
                                     <p>Monthly Payable Amount: <b><?php echo number_format($monthly, 2) ?></b></p>
                                     <p>Overdue Payable Amount: <b><?php echo number_format($penalty, 2) ?></b></p>
 									<?php if ($row['status'] == 2 || $row['status'] == 3) : ?>
 										<p>Date Released: <b><?php echo date("M d, Y", strtotime($row['date_released'])) ?></b></p>
 									<?php endif; ?>
+									<p>Date Created: <b><?php echo date("M d, Y", strtotime($row['date_created'])) ?></b></p>
                                 </td>
                                 <td>
                                     <?php
@@ -134,12 +135,15 @@
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
     $('#loan-list').dataTable()
     $('.edit_loan').click(function() {
+        console.log("Edit button pressed");
         uni_modal("Edit Loan", "manage_loan.php?id=" + $(this).attr('data-id'), 'mid-large')
     })
     $('.delete_loan').click(function() {
+        console.log("Delete button pressed");
         _conf("Are you sure to delete this data?", "delete_loan", [$(this).attr('data-id')])
     })
 
