@@ -7,15 +7,15 @@ if(isset($id)){
 		$$k = $val;
 	}
 }
-$loan = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from loan_list l inner join borrowers b on b.id = l.borrower_id where l.id = ".$loan_id);
+$loan = $conn->query("SELECT l.*,concat(m.lastname,', ',m.firstname,' ',m.middlename)as name, m.contact_no, m.address from loan_list l inner join members m on m.id = l.member_id where l.id = ".$loan_id);
 foreach($loan->fetch_array() as $k => $v){
 	$meta[$k] = $v;
 }
 $type_arr = $conn->query("SELECT * FROM loan_types where id = '".$meta['loan_type_id']."' ")->fetch_array();
 
-$plan_arr = $conn->query("SELECT *,concat(months,' month/s [ ',interest_percentage,'%, ',penalty_rate,' ]') as plan FROM loan_plan where id  = '".$meta['plan_id']."' ")->fetch_array();
-$monthly = ($meta['amount'] + ($meta['amount'] * ($plan_arr['interest_percentage']/100))) / $plan_arr['months'];
-$penalty = $monthly * ($plan_arr['penalty_rate']/100);
+// $plan_arr = $conn->query("SELECT *,concat(months,' month/s [ ',interest_percentage,'%, ',penalty_rate,' ]') as plan FROM loan_plan where id  = '".$meta['plan_id']."' ")->fetch_array();
+$monthly = ($meta['amount'] + ($meta['amount'] * ($type_arr['interest_percentage']/100))) / $type_arr['months'];
+$penalty = $monthly * ($type_arr['penalty_rate']/100);
 $payments = $conn->query("SELECT * from payments where loan_id =".$loan_id);
 $paid = $payments->num_rows;
 $offset = $paid > 0 ? " offset $paid ": "";
@@ -32,7 +32,7 @@ while($p = $payments->fetch_assoc()){
 	<div class="col-md-5">
 		<div class="form-group">
 			<label for="">Payee</label>
-			<input name="payee" class="form-control" required="" value="<?php echo isset($payee) ? $payee : (isset($meta['name']) ? $meta['name'] : '') ?>">
+			<input name="payee" class="form-control" required="" value="<?php echo isset($payee) ? $payee : (isset($meta['name']) ? $meta['name'] : '') ?>" readonly>
 		</div>
 	</div>
 	

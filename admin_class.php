@@ -427,7 +427,7 @@ class Action
 	{
 		extract($_POST);
 		$data = " loan_id = $loan_id ";
-		$data .= " , payee = '$payee' ";
+		// $data .= " , payee = '$payee' ";
 		$data .= " , amount = '$amount' ";
 		$data .= " , penalty_amount = '$penalty_amount' ";
 		$data .= " , overdue = '$overdue' ";

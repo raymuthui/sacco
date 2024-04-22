@@ -23,7 +23,7 @@ if(isset($_GET['id'])){
 							$loan = $conn->query("SELECT * from loan_list where status =2 ");
 							while($row=$loan->fetch_assoc()):
 							?>
-							<option value="<?php echo $row['id'] ?>" <?php echo isset($loan_id) && $loan_id == $row['id'] ? "selected" : '' ?>><?php echo $row['ref_no'] ?></option>
+							<option value="<?php echo $row['id'] ?>" <?php echo isset($loan_id) && $loan_id == $row['id'] ? "selected" : '' ?> readonly><?php echo $row['ref_no'] ?></option>
 							<?php endwhile; ?>
 						</select>
 						
@@ -61,6 +61,7 @@ if(isset($_GET['id'])){
 		})
 	}
 	 $('#manage-payment').submit(function(e){
+		console.log("Submit");
 	 	e.preventDefault()
 	 	start_load()
 	 	$.ajax({

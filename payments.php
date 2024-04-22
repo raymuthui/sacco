@@ -35,7 +35,7 @@
 							
 							$i=1;
 							
-							$qry = $conn->query("SELECT p.*,l.ref_no,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from payments p inner join loan_list l on l.id = p.loan_id inner join borrowers b on b.id = l.borrower_id  order by p.id asc");
+							$qry = $conn->query("SELECT p.*,l.ref_no,concat(m.lastname,', ',m.firstname,' ',m.middlename)as name, m.contact_no, m.address from payments p inner join loan_list l on l.id = p.loan_id inner join members m on m.id = l.member_id  order by p.id asc");
 							while($row = $qry->fetch_assoc()):
 								
 
@@ -47,8 +47,7 @@
 						 		<?php echo $row['ref_no'] ?>
 						 	</td>
 						 	<td>
-						 		<?php echo $row['payee'] ?>
-						 		
+						 		<?php echo $row['name'] ?>
 						 	</td>
 						 	<td>
 						 		<?php echo number_format($row['amount'],2) ?>
@@ -86,10 +85,10 @@
 <script>
 	$('#loan-list').dataTable()
 	$('#new_payments').click(function(){
-		uni_modal("New Payement","manage_payment.php",'mid-large')
+		uni_modal("New Payment","manage_payment.php",'mid-large')
 	})
 	$('.edit_payment').click(function(){
-		uni_modal("Edit Payement","manage_payment.php?id="+$(this).attr('data-id'),'mid-large')
+		uni_modal("Edit Payment","manage_payment.php?id="+$(this).attr('data-id'),'mid-large')
 	})
 	$('.delete_payment').click(function(){
 		_conf("Are you sure to delete this data?","delete_payment",[$(this).attr('data-id')])
