@@ -63,6 +63,8 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
         }
         .read-more {
             display: none;
+            color: blue;
+            text-decoration: underline;
         }
         .show-more {
             display: block;
@@ -79,7 +81,7 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
         <!-- Upcoming Sacco News -->
         <div class="container grid grid-cols-3 flex-row justify-content-between pt-5 gap-5">
             <?php while ($news = $news_qry->fetch_assoc()) { ?>
-                <div class="bg-white w-full height-[150px] rounded-xl p-5 d-flex flex-column justify-content-between shadow">
+                <div style="height: 300px;" class="bg-white w-full rounded-xl p-3 d-flex flex-column justify-content-between shadow">
                     <div class="d-flex flex-row bg-[#f2efef] rounded-lg">
                         <div class="flex place-items-center m-2 p-2 rounded-md bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
                             <img class="image-fluid" src="<?php echo $baseurl . '/' . $news['article_image_path'] ?>" alt="article pic">
