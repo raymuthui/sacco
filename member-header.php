@@ -30,14 +30,14 @@
                         <p>Settings</p>
                     </strong>
                 </div>
-                <a style="text-decoration: none;" href="ajax.php?action=logout">
-                    <div class="flex flex-row gap-2 col items-center">
+                <div><a style="text-decoration: none;" href="ajax.php?action=logout">
+                    
                         <i class="fa-solid fa-right-from-bracket" style="color: #FFC66C; font-size: 25px;"></i>
                         <strong>
-                            <p>Logout</p>
+                            Logout
                         </strong>
-                    </div>
-                </a>
+                    
+                </a></div>
             </div>
         </div>
     </nav>

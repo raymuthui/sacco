@@ -69,7 +69,7 @@ while ($row = $loan_types->fetch_assoc()) {
                             My Loans
                             <button class="btn btn-primary col-md-3 float-right" type="button" id="new_application"><i class="fa fa-plus"></i> Create New Application</button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
                             <?php
                             // Loop through all the user's loans and display their details
                             foreach ($loan_info as $loan) {
@@ -92,7 +92,7 @@ while ($row = $loan_types->fetch_assoc()) {
                         <div class="card-header">
                             Loan Types
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
                             <?php
                             // Loop through all loan types and display their details
                             foreach ($types_info as $type) {
