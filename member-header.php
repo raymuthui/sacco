@@ -1,4 +1,4 @@
-<header class="flex-column sticky">
+<header class="bg-blue-100 flex-column sticky">
     <nav class="navbar navbar-light" style="padding:0;">
         <div class="container-fluid mt-2 mb-2">
             <div class="col-lg-12 d-flex align-items-center justify-content-between">
@@ -16,6 +16,7 @@
 
 
         <div class="flex flex-row justify-between px-12 py-4 w-full bg-[#f2efef]">
+            <div><a class="text-black" href="member-home.php"><i class="fa-solid fa-left-long"></i> Go Back</a></div>
             <div class="flex justify-item-start">
                 <strong>
                     <p>Welcome to UTUMISHI Sacco, <?php echo $member['firstname'] ?>!</p>

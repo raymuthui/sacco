@@ -33,7 +33,6 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
             padding: 0;
             margin: 0;
             box-sizing: border-box;
-            background-color: #fff7df;
         }
 
         header {
@@ -55,26 +54,44 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
             font-weight: bold;
             font-size: x-large;
         }
+
+        /* Read More Styles */
+        .article-content {
+            overflow: hidden;
+            max-height: calc(1.2em * 4); /* Adjust based on your font size */
+            line-height: 1.2em; /* Adjust based on your font size */
+        }
+        .read-more {
+            display: none;
+        }
+        .show-more {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
   <?php include 'member-header.php' ?>
 
-    <main class="d-flex flex-column px-12">
+    <main class="d-flex items-center flex-column px-12">
         <h1>Sacco News</h1>
         <!-- Profile Overview section -->
         <!-- Upcoming Sacco News -->
-        <div class="d-flex flex-row justify-content-between pt-5 gap-5">
+        <div class="container grid grid-cols-3 flex-row justify-content-between pt-5 gap-5">
             <?php while ($news = $news_qry->fetch_assoc()) { ?>
-                <div class="bg-white w-50 rounded-xl p-5 d-flex flex-column justify-content-between shadow">
+                <div class="bg-white w-full height-[150px] rounded-xl p-5 d-flex flex-column justify-content-between shadow">
                     <div class="d-flex flex-row bg-[#f2efef] rounded-lg">
                         <div class="flex place-items-center m-2 p-2 rounded-md bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
                             <img class="image-fluid" src="<?php echo $baseurl . '/' . $news['article_image_path'] ?>" alt="article pic">
                         </div>
                         <div class="rounded-md bg-white m-2 p-2 w-full">
                             <h2><?php echo $news['article_title'] ? $news['article_title'] : 'N/A' ?></h2>
-                            <p><?php echo $news['article_content'] ? $news['article_content'] : 'N/A'; ?></p>
+                            <div class="article-content">
+                                <p><?php echo $news['article_content'] ? $news['article_content'] : 'N/A'; ?></p>
+                            </div>
+                            <?php if (strlen($news['article_content']) > 4 * 80) { ?>
+                                <button class="read-more">Read more</button>
+                            <?php } ?>
                             <p><b>Date Created:</b> <?php echo $news['date_created'] ? $news['date_created'] : 'N/A'; ?></p>
                         </div>
                     </div>
@@ -87,6 +104,27 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
     <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const articleContents = document.querySelectorAll('.article-content');
+        articleContents.forEach(content => {
+            const readMoreButton = content.nextElementSibling;
+            const maxLines = 4;
+            const hideButton = document.getElementById('hide-button');
+
+            const lineHeight = parseInt(window.getComputedStyle(content).lineHeight);
+            const maxHeight = lineHeight * maxLines;
+
+            if (content.scrollHeight > maxHeight) {
+                readMoreButton.classList.add('show-more');
+            }
+
+            readMoreButton.addEventListener('click', function() {
+                content.style.maxHeight = 'none';
+                readMoreButton.style.display = 'none';
+                // hideButton.style.display = 'block';
+            });
+        });
+    </script>
 </body>
 
 </html>

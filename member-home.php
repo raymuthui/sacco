@@ -49,7 +49,6 @@ $news = $news_qry->fetch_assoc();
             padding: 0;
             margin: 0;
             box-sizing: border-box;
-            background-color: #fff7df;
         }
 
         header {
@@ -64,7 +63,7 @@ $news = $news_qry->fetch_assoc();
     </style>
 </head>
 
-<body>
+<body class="bg-[#f2efef]">
   <?php include 'member-header.php' ?>
 
     <main class="d-flex flex-column px-12">
