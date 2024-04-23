@@ -62,7 +62,7 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
             line-height: 1.2em; /* Adjust based on your font size */
         }
         .read-more {
-            display: none;
+            /* display: none; */
             color: blue;
             text-decoration: underline;
         }
@@ -72,27 +72,27 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
     </style>
 </head>
 
-<body>
-  <?php include 'member-header.php' ?>
+<body class="bg-blue-100">
+    <?php include 'member-header.php' ?>
 
     <main class="d-flex items-center flex-column px-12">
         <h1>Sacco News</h1>
         <!-- Profile Overview section -->
         <!-- Upcoming Sacco News -->
-        <div class="container grid grid-cols-3 flex-row justify-content-between pt-5 gap-5">
+        <div class="container grid grid-cols-3 flex-row justify-content-between p-5 gap-5">
             <?php while ($news = $news_qry->fetch_assoc()) { ?>
-                <div style="height: 300px;" class="bg-white w-full rounded-xl p-3 d-flex flex-column justify-content-between shadow">
-                    <div class="d-flex flex-row bg-[#f2efef] rounded-lg">
-                        <div class="flex place-items-center m-2 p-2 rounded-md bg-white" style="width: 200px; height: 150px; border: 1px solid blue;">
-                            <img class="image-fluid" src="<?php echo $baseurl . '/' . $news['article_image_path'] ?>" alt="article pic">
+                <div class="bg-white w-full rounded-xl p-3 d-flex flex-column justify-content-between shadow border-solid border-gray-200">
+                    <div class="d-flex flex-column bg-white rounded-lg">
+                        <div class="flex justify-center m-2 p-2 rounded-md bg-[#f2efef]" style="width: 100%; height: 150px;">
+                            <img class="w-auto h-full image-fluid" src="<?php echo $baseurl . '/' . $news['article_image_path'] ?>" alt="article pic">
                         </div>
                         <div class="rounded-md bg-white m-2 p-2 w-full">
                             <h2><?php echo $news['article_title'] ? $news['article_title'] : 'N/A' ?></h2>
-                            <div class="article-content">
-                                <p><?php echo $news['article_content'] ? $news['article_content'] : 'N/A'; ?></p>
+                            <div class="article-content" style="height: 150px;">
+                                <p class="text-ellipsis"><?php echo $news['article_content'] ? $news['article_content'] : 'N/A'; ?></p>
                             </div>
                             <?php if (strlen($news['article_content']) > 4 * 80) { ?>
-                                <button class="read-more">Read more</button>
+                                <button class="read-more" data-toggle="modal" data-target="#articleModal" data-article="<?php echo htmlentities($news['article_content']); ?>">Read more</button>
                             <?php } ?>
                             <p><b>Date Created:</b> <?php echo $news['date_created'] ? $news['date_created'] : 'N/A'; ?></p>
                         </div>
@@ -103,27 +103,31 @@ $news_qry = $conn->query("SELECT * FROM news ORDER BY date_created DESC LIMIT 6"
         <!-- Other sections of your main content -->
     </main>
 
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="articleModalLabel">Full Article</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="fullArticleContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const articleContents = document.querySelectorAll('.article-content');
-        articleContents.forEach(content => {
-            const readMoreButton = content.nextElementSibling;
-            const maxLines = 4;
-            const hideButton = document.getElementById('hide-button');
-
-            const lineHeight = parseInt(window.getComputedStyle(content).lineHeight);
-            const maxHeight = lineHeight * maxLines;
-
-            if (content.scrollHeight > maxHeight) {
-                readMoreButton.classList.add('show-more');
-            }
-
-            readMoreButton.addEventListener('click', function() {
-                content.style.maxHeight = 'none';
-                readMoreButton.style.display = 'none';
-                // hideButton.style.display = 'block';
+        $(document).ready(function() {
+            $('.read-more').click(function() {
+                var articleContent = $(this).data('article');
+                $('#fullArticleContent').html(articleContent);
             });
         });
     </script>
