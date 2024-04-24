@@ -128,7 +128,7 @@
                                     <div class="text-lg font-weight-bold">
                                         <?php
                                         $payments = $conn->query("SELECT sum(amount - penalty_amount) as total FROM payments where date(date_created) = '" . date("Y-m-d") . "'");
-                                        $loans = $conn->query("SELECT sum(l.amount + (l.amount * (p.interest_percentage/100))) as total FROM loan_list l inner join loan_plan p on p.id = l.plan_id where l.status = 2");
+                                        $loans = $conn->query("SELECT sum(l.amount + (l.amount * (t.interest_percentage/100))) as total FROM loan_list l inner join loan_types t on t.id = l.loan_type_id where l.status = 2");
                                         $loans =  $loans->num_rows > 0 ? $loans->fetch_array()['total'] : "0";
                                         $payments =  $payments->num_rows > 0 ? $payments->fetch_array()['total'] : "0";
                                         echo number_format($loans - $payments, 2);
