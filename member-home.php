@@ -66,24 +66,24 @@ $news = $news_qry->fetch_assoc();
 <body class="bg-white">
     <?php include 'member-header.php' ?>
 
-    <main class="d-flex flex-column px-12">
+    <main class="d-flex flex-column px-12 bg-gradient-to-r from-blue-200 via-blue-300 to-purple-500 ">
         <div class="d-flex flex-row justify-content-between pt-5 gap-5">
             <!-- Profile Card -->
-            <div class="bg-gray-100 w-full rounded-xl p-5 d-flex flex-column gap-3 border border-purple-500 shadow">
+            <div class="bg-purple-200 w-full rounded-xl p-5 d-flex flex-column gap-3 border border-purple-500 shadow">
                 <h2 class="font-semibold text-xl">Profile Overview</h2>
-                <table style="border-color: gray;" class="table table-bordered border-2">
+                <table class="table table-bordered border-2">
                     <tbody>
                         <tr>
                             <td>
                                 <div class="d-flex flex-row rounded-lg">
-                                    <div class="flex place-items-center m-2 p-2 border border-gray-500 bg-white" style="width: 200px; height: 150px;">
+                                    <div class="flex place-items-center m-2 p-2 border border-purple-500 bg-white rounded-xl" style="width: 200px; height: 150px;">
                                         <img class="image-fluid" src="<?php echo $baseurl . '/' . $member['profile_pic_path'] ?>" alt="profile pic">
                                     </div>
-                                    <div class="text-lg bg-white m-2 p-2 border border-gray-500 w-full">
-                                        <p><span class="font-bold">Name:</span> <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
-                                        <p><span class="font-bold">Total Loan Amount:</span> Ksh <?php echo number_format($loan_amount['total_amount'] ? $loan_amount['total_amount'] : 0); ?></p>
-                                        <p><span class="font-bold">Total Investments:</span></p>
-                                        <p><span class="font-bold">Total Penalty: </span> Ksh <?php echo number_format($loan_penalty['total_penalty'] ? $loan_penalty['total_penalty'] : 0); ?></p>
+                                    <div class="grid grid-cols-2 text-lg bg-white m-2 p-2 border border-gray-500 w-full rounded-xl">
+                                        <p class="flex flex-col"><span class="font-bold">Name:</span> <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
+                                        <p class="flex flex-col"><span class="font-bold">Total Loan Amount:</span> Ksh <?php echo number_format($loan_amount['total_amount'] ? $loan_amount['total_amount'] : 0); ?></p>
+                                        <p class="flex flex-col"><span class="font-bold">Total Investments:</span></p>
+                                        <p class="flex flex-col"><span class="font-bold">Total Penalty: </span> Ksh <?php echo number_format($loan_penalty['total_penalty'] ? $loan_penalty['total_penalty'] : 0); ?></p>
                                     </div>
                                 </div>
                             </td>
@@ -93,17 +93,17 @@ $news = $news_qry->fetch_assoc();
 
             </div>
             <!-- Sacco News Card -->
-            <div class="bg-purple-100 w-full rounded-xl p-5 d-flex flex-column justify-content-between gap-3 border border-purple-500 shadow">
+            <div class="bg-purple-200 w-full rounded-xl p-5 d-flex flex-column justify-content-between gap-3 border border-purple-500 shadow">
                 <h2 class="font-semibold text-xl">Upcoming Sacco News</h2>
-                <table style="border-color: purple;" class="table table-bordered border-2">
+                <table class="table table-bordered border-2">
                     <tbody>
                         <tr>
                             <td>
                                 <div class="d-flex flex-row">
-                                    <div class="flex place-items-center m-2 p-2 rounded-md bg-white border border-purple-500" style="width: 200px; height: 150px;">
+                                    <div class="flex place-items-center m-2 p-2 rounded-xl bg-white border border-purple-500" style="width: 200px; height: 150px;">
                                         <img class="image-fluid" src="<?php echo $baseurl . '/' . $news['article_image_path'] ?>" alt="article pic">
                                     </div>
-                                    <div class="text-lg rounded-md m-2 p-2 w-full bg-white border border-purple-500">
+                                    <div class="flex items-center gap-3 text-lg rounded-xl m-2 p-2 w-full bg-white border border-purple-500">
                                         <p><span class="font-bold">Article Title:</span> <?php echo $news['article_title'] ? $news['article_title'] : 'N/A' ?></p>
                                         <p><span class="font-bold">Article Content:</span> <?php echo $news['article_content'] ? $news['article_content'] : 'N/A'; ?></p>
                                         <p><span class="font-bold">Date Created:</span> <?php echo $news['date_created'] ? $news['date_created'] : 'N/A'; ?></p>

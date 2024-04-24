@@ -1,4 +1,4 @@
-<header class="bg-blue-100 flex-column sticky">
+<header class="bg-blue-200 flex-column sticky">
     <nav class="navbar navbar-light" style="padding:0;">
         <div class="container-fluid mt-2 mb-2">
             <div class="col-lg-12 d-flex align-items-center justify-content-between">
