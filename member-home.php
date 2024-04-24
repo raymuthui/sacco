@@ -79,7 +79,7 @@ $news = $news_qry->fetch_assoc();
                                     <div class="flex place-items-center m-2 p-2 border border-purple-500 bg-white rounded-xl" style="width: 200px; height: 150px;">
                                         <img class="image-fluid" src="<?php echo $baseurl . '/' . $member['profile_pic_path'] ?>" alt="profile pic">
                                     </div>
-                                    <div class="grid grid-cols-2 text-lg bg-white m-2 p-2 border border-gray-500 w-full rounded-xl">
+                                    <div class="grid grid-cols-2 gap-3 text-lg bg-white m-2 p-2 border border-gray-500 w-full rounded-xl">
                                         <p class="flex flex-col"><span class="font-bold">Name:</span> <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
                                         <p class="flex flex-col"><span class="font-bold">Total Loan Amount:</span> Ksh <?php echo number_format($loan_amount['total_amount'] ? $loan_amount['total_amount'] : 0); ?></p>
                                         <p class="flex flex-col"><span class="font-bold">Total Investments:</span></p>
