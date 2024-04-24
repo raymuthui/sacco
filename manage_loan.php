@@ -47,6 +47,7 @@ $type = $conn->query("SELECT * FROM loan_types ORDER BY `type_name` DESC");
                 <div class="form-group col-md-6">
                     <label class="control-label">Loan Amount</label>
                     <input type="number" name="amount" class="form-control text-right" step="any" value="<?php echo isset($row['amount']) ? $row['amount'] : '' ?>">
+                    <input type="hidden" id="initial_status" name="initial_status" value="<?php echo isset($row['status']) ? $row['status'] : ''; ?>">
                 </div>
 				<div class="form-group col-md-4">
                     <label class="control-label">Status</label>
@@ -95,9 +96,10 @@ $type = $conn->query("SELECT * FROM loan_types ORDER BY `type_name` DESC");
             e.preventDefault();
             start_load();
 			var status = $('[name="status"').val(); // Get the selected status value
+            var initialStatus = $('#initial_status').val(); 
 			console.log("Selected status: ", status);
 
-			if(status == 2) {
+			if(status == 2 && initialStatus != 2) {
 				// Update date_released field
 				var currentDate = '<?php echo date("Y-m-d H:i:s"); ?>';
 				console.log('Current Date: ', currentDate);

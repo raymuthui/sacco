@@ -6,7 +6,7 @@
 			<div class="card-header">
 				<large class="card-title">
 					<b>Payment List</b>
-					<button class="btn btn-primary  col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> New Payment</button>
+					<!-- <button class="btn btn-primary  col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> New Payment</button> -->
 				</large>
 				
 			</div>
@@ -18,7 +18,7 @@
 						<col width="25%">
 						<col width="20%">
 						<col width="10%">
-						<col width="10%">
+						<!-- <col width="10%"> -->
 					</colgroup>
 					<thead>
 						<tr>
@@ -27,7 +27,7 @@
 							<th class="text-center">Payee</th>
 							<th class="text-center">Amount</th>
 							<th class="text-center">Penalty</th>
-							<th class="text-center">Action</th>
+							<!-- <th class="text-center">Action</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -56,10 +56,10 @@
 						 	<td class="text-center">
 						 		<?php echo number_format($row['penalty_amount'],2) ?>
 						 	</td>
-						 	<td class="text-center">
+						 	<!-- <td class="text-center">
 						 			<button class="btn btn-primary edit_payment" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></button>
 						 			<button class="btn btn-danger delete_payment" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
-						 	</td>
+						 	</td> -->
 
 						 </tr>
 
