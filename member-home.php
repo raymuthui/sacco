@@ -24,10 +24,10 @@ if (!$member) {
     exit('Member details not found.');
 }
 
-$loan_qry = $conn->query("SELECT amount FROM loan_list WHERE member_id = " . $user_id);
+$loan_qry = $conn->query("SELECT SUM(amount) AS total_amount FROM loan_list WHERE member_id = " . $user_id);
 $loan_amount = $loan_qry->fetch_assoc();
 
-$loan__qry = $conn->query("SELECT penalty_accrued FROM loan_list WHERE member_id = " . $user_id);
+$loan__qry = $conn->query("SELECT SUM(penalty_accrued) AS total_penalty FROM loan_list WHERE member_id = " . $user_id);
 $loan_penalty = $loan__qry->fetch_assoc();
 
 $news_qry = $conn->query("SELECT * FROM news");
@@ -81,9 +81,9 @@ $news = $news_qry->fetch_assoc();
                                     </div>
                                     <div class="text-lg bg-white m-2 p-2 border border-gray-500 w-full">
                                         <p><span class="font-bold">Name:</span> <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
-                                        <p><span class="font-bold">Total Loan Amount:</span> Ksh <?php echo $loan_amount['amount'] ? $loan_amount['amount'] : 0; ?></p>
+                                        <p><span class="font-bold">Total Loan Amount:</span> Ksh <?php echo number_format($loan_amount['total_amount'] ? $loan_amount['total_amount'] : 0); ?></p>
                                         <p><span class="font-bold">Total Investments:</span></p>
-                                        <p><span class="font-bold">Total Penalty: Ksh</span> <?php echo $loan_penalty['penalty_accrued'] ? $loan_penalty['penalty_accrued'] : 0; ?></p>
+                                        <p><span class="font-bold">Total Penalty: </span> Ksh <?php echo number_format($loan_penalty['total_penalty'] ? $loan_penalty['total_penalty'] : 0); ?></p>
                                     </div>
                                 </div>
                             </td>
@@ -141,7 +141,7 @@ $news = $news_qry->fetch_assoc();
             <div class="col-md-4">
                 <div class="bg-red-100 rounded-xl p-5 d-flex flex-column justify-content-between border border-red-500 shadow">
                     <h2 class="font-semibold text-xl">Loans and Repayment</h2>
-                    <h3 class="text-red-500 font-bold text-2xl">Ksh 1,000</h3>
+                    <h3 class="text-red-500 font-bold text-2xl">Ksh <?php echo number_format($loan_amount['total_amount'] ? $loan_amount['total_amount'] : 0); ?></h3>
                     <div class="h-100 w-100 bg-danger rounded-lg"></div>
                     <a class="text-red-500 text-right" href="member-loan.php">View More <i class="fa-solid fa-right-long"></i></a>
                 </div>
