@@ -16,7 +16,9 @@
 
 
         <div class="flex flex-row justify-between px-12 py-4 w-full bg-[#f2efef]">
-            <div><a class="text-black" href="member-home.php"><i class="fa-solid fa-left-long"></i> Go Back</a></div>
+            <?php if ($_SERVER['REQUEST_URI'] !== '/sacco/member-home.php') : ?>
+                <div><a class="text-black" href="member-home.php"><i class="fa-solid fa-left-long"></i> Go Back</a></div>
+            <?php endif; ?>
             <div class="flex justify-item-start">
                 <strong>
                     <p>Welcome to UTUMISHI Sacco, <?php echo $member['firstname'] ?>!</p>
