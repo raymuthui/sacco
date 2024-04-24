@@ -23,8 +23,9 @@ if (!$member) {
     // Redirect or handle the case where member details are not found
     exit('Member details not found.');
 }
+$status = 2;
 
-$loan_qry = $conn->query("SELECT SUM(amount) AS total_amount FROM loan_list WHERE member_id = " . $user_id);
+$loan_qry = $conn->query("SELECT SUM(amount) AS total_amount FROM loan_list WHERE member_id = " . $user_id . " AND status = " . $status);
 $loan_amount = $loan_qry->fetch_assoc();
 
 $loan__qry = $conn->query("SELECT SUM(penalty_accrued) AS total_penalty FROM loan_list WHERE member_id = " . $user_id);
