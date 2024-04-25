@@ -122,9 +122,11 @@ if (!$member) {
                                 $counter = 1;
                                 while ($transaction_row = $transactions_query->fetch_assoc()) :
                                 ?>
-                                    <tr>
+                                   <tr style="background-color: <?php echo $transaction_row['type'] == 1 ? 'lightgreen' : 'salmon' ?>">
                                         <td class="text-center"><?php echo $counter++ ?></td>
-                                        <td><?php echo $transaction_row['type'] == 1 ? 'Deposit' : 'Withdrawal' ?></td>
+                                        <td>
+                                            <?php echo $transaction_row['type'] == 1 ? 'Deposit' : 'Withdrawal' ?>
+                                        </td>
                                         <td><?php echo number_format($transaction_row['amount'], 2) ?></td>
                                         <td><?php echo $transaction_row['transaction_date'] ?></td>
                                     </tr>
