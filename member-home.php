@@ -135,7 +135,7 @@ $news = $news_qry->fetch_assoc();
                     <h2 class="font-semibold text-xl">Savings Account</h2>
                     <h3 class="text-green-500 font-bold text-2xl">Ksh 20,000</h3>
                     <div class="h-100 w-100 bg-danger rounded-lg"></div>
-                    <a class="text-green-500 text-right" href="account.html">View More <i class="fa-solid fa-right-long"></i></a>
+                    <a class="text-green-500 text-right" href="member-savings.php">View More <i class="fa-solid fa-right-long"></i></a>
                 </div>
             </div>
             <!-- Loans Card -->

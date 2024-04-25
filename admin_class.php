@@ -514,7 +514,17 @@ class Action
 		$update_result = $this->db->query($update_query);
 
 		if ($update_result) {
-			return 1; // Successful update
+			$random_number = mt_rand(100000, 999999);
+			$account_number = 'SAV' . $random_number;
+			$insert_account_query = "INSERT INTO savings_account (member_id, account_number) VALUES ('$id', '$account_number')";
+			$insert_account_result = $this->db->query($insert_account_query);
+
+			if ($insert_account_result) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
 		} else {
 			return 0; // Failed update
 		}
