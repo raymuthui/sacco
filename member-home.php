@@ -31,6 +31,9 @@ $loan_amount = $loan_qry->fetch_assoc();
 $loan__qry = $conn->query("SELECT SUM(penalty_accrued) AS total_penalty FROM loan_list WHERE member_id = " . $user_id);
 $loan_penalty = $loan__qry->fetch_assoc();
 
+$savings_qry = $conn->query("SELECT balance FROM savings_account WHERE member_id = ". $user_id);
+$savings_amount = $savings_qry->fetch_assoc();
+
 $news_qry = $conn->query("SELECT * FROM news");
 $news = $news_qry->fetch_assoc();
 ?>
@@ -133,7 +136,7 @@ $news = $news_qry->fetch_assoc();
             <div class="col-md-4">
                 <div class="bg-green-100 rounded-xl p-5 d-flex flex-column justify-content-between border border-green-500 shadow">
                     <h2 class="font-semibold text-xl">Savings Account</h2>
-                    <h3 class="text-green-500 font-bold text-2xl">Ksh 20,000</h3>
+                    <h3 class="text-green-500 font-bold text-2xl">Ksh <?php echo number_format($savings_amount['balance'] ? $savings_amount['balance'] : 0); ?></h3>
                     <div class="h-100 w-100 bg-danger rounded-lg"></div>
                     <a class="text-green-500 text-right" href="member-savings.php">View More <i class="fa-solid fa-right-long"></i></a>
                 </div>
