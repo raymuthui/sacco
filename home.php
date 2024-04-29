@@ -148,6 +148,34 @@
                     </div>
                 </div>
 
+                  <div class="col-md-4">
+                    <div class="card bg-info text-white mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-3">
+                                    <div class="text-white-75">Total Savings</div>
+                                    <div class="text-lg font-weight-bold">
+                                        <?php
+                                        $total_savings_query = $conn->query("SELECT SUM(balance) AS total_savings FROM savings_account");
+                                        if ($total_savings_query) {
+                                            $total_savings_data = $total_savings_query->fetch_assoc();
+                                            $total_savings = $total_savings_data['total_savings'];
+                                            echo number_format($total_savings, 2);
+                                        } else {
+                                            echo "Error fetching data.";
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="text-white stretched-link" href="index.php?page=savings">View Savings List</a>
+                            <div class="text-white"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="row ml-2 mr-2">
 

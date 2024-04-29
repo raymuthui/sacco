@@ -9,7 +9,7 @@
 				<a href="index.php?page=news" class="nav-item nav-news"><span class='icon-field'><i class="icofont-newspaper"></i> News</span></a>
 				<a href="index.php?page=loans" class="nav-item nav-loans"><span class='icon-field'><i class="fa fa-file-invoice-dollar"></i></span> Loans</a>	
 				<a href="index.php?page=payments" class="nav-item nav-payments"><span class='icon-field'><i class="fa fa-money-bill"></i></span> Payments</a>
-				<a href="index.php?page=borrowers" class="nav-item nav-borrowers"><span class='icon-field'><i class="fa fa-user-friends"></i></span> Borrowers</a>
+				<a href="index.php?page=savings" class="nav-item nav-borrowers"><span class='icon-field'><i class="fa fa-user-friends"></i></span> Savings</a>
 				<!-- <a href="index.php?page=plan" class="nav-item nav-plan"><span class='icon-field'><i class="fa fa-list-alt"></i></span> Loan Plans</a>	 -->
 				<a href="index.php?page=loan_type" class="nav-item nav-loan_type"><span class='icon-field'><i class="fa fa-th-list"></i></span> Loan Types</a>	
 				<a href="index.php?page=members" class="nav-item nav-members"><span class='icon-field'><i class="fa fa-users"></i></span> Members</a>	
