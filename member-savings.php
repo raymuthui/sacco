@@ -69,7 +69,7 @@ if (!$member) {
                                 <form id="deposit_form">
                                     <div class="form-group">
                                         <label for="deposit_amount">Amount to Deposit:</label>
-                                        <input type="number" step="0.01" min="0" class="form-control" id="deposit_amount" name="deposit_amount" required>
+                                        <input type="number" step="100" min="100" class="form-control" id="deposit_amount" name="deposit_amount" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Deposit</button>
                                 </form>
@@ -85,7 +85,7 @@ if (!$member) {
                                 <form id="withdraw_form">
                                     <div class="form-group">
                                         <label for="withdraw_amount">Amount to Withdraw:</label>
-                                        <input type="number" step="0.01" min="0" class="form-control" id="withdraw_amount" name="withdraw_amount" required>
+                                        <input type="number" step="100" min="100" class="form-control" id="withdraw_amount" name="withdraw_amount" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Withdraw</button>
                                 </form>

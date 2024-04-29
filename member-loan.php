@@ -25,7 +25,7 @@ if (!$member) {
 }
 
 // Fetch loan information with loan type details for the specific user
-$loan_qry = $conn->query("SELECT ll.amount, ll.penalty_accrued, ll.ref_no, lt.type_name, lt.description, lt.months, lt.interest_percentage 
+$loan_qry = $conn->query("SELECT ll.amount, ll.penalty_accrued, ll.ref_no, ll.purpose, lt.type_name, lt.description, lt.months, lt.interest_percentage 
                             FROM loan_list ll 
                             INNER JOIN loan_types lt ON ll.loan_type_id = lt.id 
                             WHERE ll.member_id = " . $user_id);
@@ -82,9 +82,11 @@ while ($row = $loan_types->fetch_assoc()) {
                                     <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
                                     <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
                                     <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
+                                    <p class="card-text">Purpose: <?php echo isset($loan['purpose']) ? $loan['purpose'] : 'N/A'; ?></p>
                                     <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
                                     <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
                                     <hr>
+                                    <br>
                                 </td>
                             <?php
                             }
@@ -110,6 +112,7 @@ while ($row = $loan_types->fetch_assoc()) {
                                 <p class="card-text">Interest Percentage: <?php echo $type['interest_percentage']; ?>%</p>
                                 <p class="card-text">Penalty Rate: <?php echo $type['penalty_rate']; ?>%</p>
                                 <hr>
+                                <br>
                             <?php
                             }
                             ?>
@@ -165,7 +168,9 @@ while ($row = $loan_types->fetch_assoc()) {
         $(document).ready(function() {
 
             $('#loan-list').dataTable()
+            //TODO: create a payments portal for the sacco
             $('#new_payments').click(function() {
+                console.log('Payments button pressed');
                 uni_modal("New Payment", "manage_payment.php", 'mid-large')
             })
             // Button click event to open the new loan modal
