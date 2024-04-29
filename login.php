@@ -94,6 +94,8 @@ div#login-right::before {
   						<center><button class="btn btn-wave col-md-4 btn-primary">Login</button></center>
   						<br>
 						<span class="badge badge-warning">New to the sacco? </span>  : <a href="newusers.php">Register here</a>
+						<br>
+						<span class="badge badge-warning">Are you an institution? </span>  : <a href="new_sacco_user.php">Register here</a>
   						 <span class="badge badge-warning">Contact for Any Project Development Work</span>  : <a href = "Enchanted Tech: borelennox@gmail.com">Click here</a>
   					</form>
   				</div>

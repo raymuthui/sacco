@@ -74,13 +74,18 @@ while ($row = $loan_types->fetch_assoc()) {
                             // Loop through all the user's loans and display their details
                             foreach ($loan_info as $loan) {
                             ?>
-                                <h5 class="card-title">Reference No: <?php echo isset($loan['ref_no']) ? $loan['ref_no'] : 'N/A'; ?></h5>
-                                <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
-                                <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
-                                <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
-                                <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
-                                <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
-                                <hr>
+                                <td>
+                                    <button class="btn btn-primary  col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> Make Payment</button>
+                                </td>
+                                <td>
+                                    <h5 class="card-title">Reference No: <?php echo isset($loan['ref_no']) ? $loan['ref_no'] : 'N/A'; ?></h5>
+                                    <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
+                                    <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
+                                    <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
+                                    <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
+                                    <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
+                                    <hr>
+                                </td>
                             <?php
                             }
                             ?>
@@ -113,7 +118,7 @@ while ($row = $loan_types->fetch_assoc()) {
                 </div>
             </div>
         </div>
-            <!-- Modal for New Loan Application -->
+        <!-- Modal for New Loan Application -->
         <div class="modal fade" id="newLoanModal" tabindex="-1" role="dialog" aria-labelledby="newLoanModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -157,19 +162,24 @@ while ($row = $loan_types->fetch_assoc()) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
+
+            $('#loan-list').dataTable()
+            $('#new_payments').click(function() {
+                uni_modal("New Payment", "manage_payment.php", 'mid-large')
+            })
             // Button click event to open the new loan modal
-            $('#new_application').click(function () {
+            $('#new_application').click(function() {
                 $('#newLoanModal').modal('show');
                 // Fetch loan types dynamically and populate the select input
                 $.ajax({
                     url: 'ajax.php?action=get_loan_types',
                     method: 'GET',
-                    success: function (response) {
+                    success: function(response) {
                         try {
                             var types = JSON.parse(response);
                             var options = '';
-                            types.forEach(function (type) {
+                            types.forEach(function(type) {
                                 options += '<option value="' + type.id + '">' + type.type_name + '</option>';
                             });
                             $('#loanType').html(options);
@@ -178,7 +188,7 @@ while ($row = $loan_types->fetch_assoc()) {
                             // Handle the error, e.g., display a message to the user or log it
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error('AJAX Error:', error);
                         // Handle the AJAX error, e.g., display a message to the user or log it
                     }
@@ -187,20 +197,20 @@ while ($row = $loan_types->fetch_assoc()) {
             });
 
             // Submit loan application form
-            $('#submitLoan').click(function () {
+            $('#submitLoan').click(function() {
                 var formData = $('#loan-application-form').serialize();
                 $.ajax({
                     url: 'ajax.php?action=save_loan',
                     method: 'POST',
                     data: formData,
-                    success: function (response) {
+                    success: function(response) {
                         if (response == 1) {
                             alert('Loan application submitted successfully.');
                             $('#newLoanModal').modal('hide');
                             // Refresh or update loan information display here
-                            setTimeout(function(){
+                            setTimeout(function() {
                                 location.reload();
-                            },1500)
+                            }, 1500)
                         } else {
                             alert('Failed to submit loan application.');
                         }
