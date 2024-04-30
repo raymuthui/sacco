@@ -39,6 +39,7 @@ while ($row = $loan_qry->fetch_assoc()) {
 
 $loan_types = $conn->query("SELECT * FROM loan_types");
 $types_info = array(); // Initialize an array to store all loan types
+$default_status = 0;
 
 // Loop through all loan types and store them in the $types_info array
 while ($row = $loan_types->fetch_assoc()) {
@@ -149,6 +150,8 @@ while ($row = $loan_types->fetch_assoc()) {
                             </div>
                             <!-- Hidden input field for member_id -->
                             <input type="hidden" name="member_id" value="<?php echo $user_id; ?>">
+                             <!-- Hidden input field for status with default value of 0 -->
+                            <input type="hidden" name="status" id="status" value="<?php echo $default_status; ?>">
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -164,6 +167,7 @@ while ($row = $loan_types->fetch_assoc()) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
 
