@@ -25,6 +25,9 @@ if (!$member) {
 }
 $status = 2;
 
+$investments_qry = $conn->query("SELECT SUM(amount) AS total_amount FROM investment_list WHERE member_id = " . $user_id);
+$investments_amount = $investments_qry->fetch_assoc();
+
 $loan_qry = $conn->query("SELECT SUM(amount) AS total_amount FROM loan_list WHERE member_id = " . $user_id . " AND status = " . $status);
 $loan_amount = $loan_qry->fetch_assoc();
 
@@ -86,7 +89,7 @@ $news = $news_qry->fetch_assoc();
                                     <div class="grid grid-cols-2 gap-3 text-lg bg-white m-2 p-2 border border-gray-500 w-full rounded-xl">
                                         <p class="flex flex-col"><span class="font-bold">Name:</span> <?php echo $member['firstname'] . ' ' . $member['middlename'] . ' ' . $member['lastname'] ?></p>
                                         <p class="flex flex-col"><span class="font-bold">Total Loan Amount:</span> Ksh <?php echo number_format($loan_amount['total_amount'] ? $loan_amount['total_amount'] : 0); ?></p>
-                                        <p class="flex flex-col"><span class="font-bold">Total Investments:</span></p>
+                                        <p class="flex flex-col"><span class="font-bold">Total Investments:</span> Ksh <?php echo number_format($investments_amount['total_amount'] ? $investments_amount['total_amount'] : 0); ?></p>
                                         <p class="flex flex-col"><span class="font-bold">Total Penalty: </span> Ksh <?php echo number_format($loan_penalty['total_penalty'] ? $loan_penalty['total_penalty'] : 0); ?></p>
                                     </div>
                                 </div>
@@ -127,9 +130,9 @@ $news = $news_qry->fetch_assoc();
             <div class="col-md-4">
                 <div class="bg-blue-100 rounded-xl p-5 d-flex flex-column justify-content-between border border-blue-500 shadow">
                     <h2 class="font-semibold text-xl">Investments</h2>
-                    <h3 class="text-blue-500 font-bold text-2xl">Ksh 13,000</h3>
+                    <h3 class="text-blue-500 font-bold text-2xl">Ksh <?php echo number_format($investments_amount['total_amount'] ? $investments_amount['total_amount'] : 0); ?></h3>
                     <div class="h-100 w-100 bg-danger rounded-lg"></div>
-                    <a class="text-blue-500 text-right" href="investments.html">View More <i class="fa-solid fa-right-long"></i></a>
+                    <a class="text-blue-500 text-right" href="member-investment.php">View More <i class="fa-solid fa-right-long"></i></a>
                 </div>
             </div>
             <!-- Savings Card -->

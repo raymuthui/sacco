@@ -570,4 +570,59 @@ class Action
 			return 0; // Failed update
 		}
 	}
+
+	public function get_investment_types()
+    {
+        // Fetch investment types from the database
+        $investment_types_qry = $this->db->query("SELECT id, investment_name FROM investment_types");
+        $investment_types = array();
+
+        while ($row = $investment_types_qry->fetch_assoc()) {
+            $investment_types[] = $row;
+        }
+
+        return $investment_types;
+    }
+
+	public function save_investment($data)
+	{
+		// Extract POST data
+		extract($data);
+
+		// Validate and sanitize input data as needed
+
+		// Fetch investment type details including the min_amount
+		$investment_type_qry = $this->db->query("SELECT min_amount FROM investment_types WHERE id = $investment_type_id");
+		if ($investment_type_qry->num_rows > 0) {
+			$investment_type = $investment_type_qry->fetch_assoc();
+			$min_amount = $investment_type['min_amount'];
+
+			// Check if amount is greater than or equal to min_amount
+			if ($amount < $min_amount) {
+				return "Error: Amount cannot be less than the minimum amount for this investment type.";
+			}
+
+			// Generate unique ref_no
+			$ref_no = mt_rand(10000000, 99999999); // Example of generating an 8-digit random number
+			$ref_exists = $this->db->query("SELECT * FROM investment_list WHERE ref_no = '$ref_no'");
+			while ($ref_exists->num_rows > 0) {
+				$ref_no = mt_rand(10000000, 99999999); // Regenerate if the generated ref_no already exists
+				$ref_exists = $this->db->query("SELECT * FROM investment_list WHERE ref_no = '$ref_no'");
+			}
+
+			// Example of saving the new investment with the validated amount
+			// Assuming you have proper validations and data sanitization in place
+			$save = $this->db->query("INSERT INTO investment_list (member_id, ref_no, investment_type_id, amount) VALUES ('$member_id', '$ref_no', '$investment_type_id', '$amount')");
+
+			if ($save) {
+				return 1; // Success response
+			} else {
+				return "Error: Failed to save investment. " . $this->db->error;
+			}
+		} else {
+			return "Error: Investment type details not found";
+		}
+	}
+
+	
 }

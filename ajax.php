@@ -138,3 +138,26 @@ if($action == "approve_member"){
 	if($save)
 		echo $save;
 }
+
+// Handle AJAX request for getting investment types
+if ($action == 'get_investment_types') {
+    // Fetch investment types from the Admin class method
+    $save = $crud->get_investment_types();
+
+    // Send JSON response containing investment types
+    echo json_encode($save);
+    exit;
+}
+
+// Handle AJAX request for saving new investment
+if ($action == 'save_investment') {
+    // Extract POST data
+    extract($_POST);
+
+    // Call Admin class method to save the new investment
+    $save = $crud->save_investment($_POST);
+
+    // Return the response from the Admin class method
+    echo $save;
+    exit;
+}
