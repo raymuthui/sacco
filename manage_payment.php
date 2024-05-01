@@ -7,6 +7,7 @@ if(isset($_GET['id'])){
 		$$k = $val;
 	}
 }
+$default_overdue = 0;
 
 ?>
 <div class="container-fluid">
@@ -29,7 +30,7 @@ if(isset($_GET['id'])){
 						
 					</div>
 					<div class="form-group">
-						<label for="" class="control-label">Loan Reference No.</label>
+						<label for="" class="control-label">Loan Payment Method</label>
 						<select name="payment_method" id="" class="custom-select browser-default select2">
 							<option value=""></option>
 							<option value="Mpesa">Mpesa</option>
@@ -46,11 +47,13 @@ if(isset($_GET['id'])){
 						<label class="control-label" for="amount">Amount</label>
 						<input type="number" name="amount" id="amount" class="form-control">
 					</div>
+					<!-- Hidden input field for status with default value of 0 -->
+					<input type="hidden" name="overdue" id="overdue" value="<?php echo $default_overdue; ?>">
 				</div>
 			</div>
-			<div class="row" id="fields">
+			<!-- <div class="row" id="fields">
 				
-			</div>
+			</div> -->
 		</form>
 	</div>
 </div>
@@ -64,20 +67,20 @@ if(isset($_GET['id'])){
 		width:"100%"
 	})
 
-	function load_fields(){
-		start_load()
-		$.ajax({
-			url:'load_fields.php',
-			method:"POST",
-			data:{id:'<?php echo isset($id) ? $id : "" ?>',loan_id:$('[name="loan_id"]').val()},
-			success:function(resp){
-				if(resp){
-					$('#fields').html(resp)
-					end_load()
-				}
-			}
-		})
-	}
+	// function load_fields(){
+	// 	start_load()
+	// 	$.ajax({
+	// 		url:'load_fields.php',
+	// 		method:"POST",
+	// 		data:{id:'<?php echo isset($id) ? $id : "" ?>',loan_id:$('[name="loan_id"]').val()},
+	// 		success:function(resp){
+	// 			if(resp){
+	// 				$('#fields').html(resp)
+	// 				end_load()
+	// 			}
+	// 		}
+	// 	})
+	// }
 	 $('#manage-payment').submit(function(e){
 		console.log("Submit");
 	 	e.preventDefault()
