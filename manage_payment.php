@@ -28,6 +28,24 @@ if(isset($_GET['id'])){
 						</select>
 						
 					</div>
+					<div class="form-group">
+						<label for="" class="control-label">Loan Reference No.</label>
+						<select name="payment_method" id="" class="custom-select browser-default select2">
+							<option value=""></option>
+							<option value="Mpesa">Mpesa</option>
+							<option value="Paypal">Paypal</option>
+							<option value="Credit Card">Credit Card</option>
+						</select>
+						
+					</div>
+					<div>
+						<label for="penalty_amount">Penalty Amount</label>
+						<input type="number" name="penalty_amount" id="penalty_amount">
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="amount">Amount</label>
+						<input type="number" name="amount" id="amount" class="form-control">
+					</div>
 				</div>
 			</div>
 			<div class="row" id="fields">

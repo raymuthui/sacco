@@ -25,7 +25,7 @@ if (!$member) {
 }
 
 // Fetch loan information with loan type details for the specific user
-$loan_qry = $conn->query("SELECT ll.amount, ll.penalty_accrued, ll.ref_no, ll.purpose, lt.type_name, lt.description, lt.months, lt.interest_percentage 
+$loan_qry = $conn->query("SELECT ll.amount, ll.status, ll.penalty_accrued, ll.ref_no, ll.purpose, lt.type_name, lt.description, lt.months, lt.interest_percentage 
                             FROM loan_list ll 
                             INNER JOIN loan_types lt ON ll.loan_type_id = lt.id 
                             WHERE ll.member_id = " . $user_id);
@@ -61,30 +61,47 @@ while ($row = $loan_types->fetch_assoc()) {
 
 <body>
     <?php include 'member-header.php' ?>
+    <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-white">
+        </div>
+    </div>
     <main class="container">
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between">
                             My Loans
                             <button class="btn btn-primary col-md-3 float-right" type="button" id="new_application"><i class="fa fa-plus"></i> Create New Application</button>
+                            <button class="btn btn-primary  col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> Make Payment</button>
                         </div>
                         <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
                             <?php
                             // Loop through all the user's loans and display their details
                             foreach ($loan_info as $loan) {
                             ?>
-                                <td>
-                                    <button class="btn btn-primary  col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> Make Payment</button>
-                                </td>
+                                <?php $amount = $loan['amount']; $interest = $loan['interest_percentage']; $months = $loan['months'];?>
                                 <td>
                                     <h5 class="card-title">Reference No: <?php echo isset($loan['ref_no']) ? $loan['ref_no'] : 'N/A'; ?></h5>
                                     <p class="card-text">Amount: Ksh <?php echo isset($loan['amount']) ? $loan['amount'] : 'N/A'; ?></p>
                                     <p class="card-text">Type Name: <?php echo isset($loan['type_name']) ? $loan['type_name'] : 'N/A'; ?></p>
                                     <p class="card-text">Description: <?php echo isset($loan['description']) ? $loan['description'] : 'N/A'; ?></p>
+                                    <p class="card-text">Status: <?php if ($loan['status'] == 0) : ?>
+                                            <span class="badge badge-warning">For Approval</span>
+                                        <?php elseif ($loan['status'] == 1) : ?>
+                                            <span class="badge badge-info">Approved</span>
+                                        <?php elseif ($loan['status'] == 2) : ?>
+                                            <span class="badge badge-primary">Released</span>
+                                        <?php elseif ($loan['status'] == 3) : ?>
+                                            <span class="badge badge-success">Completed</span>
+                                        <?php elseif ($loan['status'] == 4) : ?>
+                                            <span class="badge badge-danger">Denied</span>
+                                        <?php endif; ?>
+                                    </p>
                                     <p class="card-text">Purpose: <?php echo isset($loan['purpose']) ? $loan['purpose'] : 'N/A'; ?></p>
                                     <p class="card-text">Months: <?php echo isset($loan['months']) ? $loan['months'] : 'N/A'; ?></p>
+                                    <p class="card-text">Monthly Installments: <?php echo number_format((($amount + ($amount * ($interest/100))) / $months), 2);
+ ?></p>
                                     <p class="card-text">Interest Percentage: <?php echo isset($loan['interest_percentage']) ? $loan['interest_percentage'] : 'N/A'; ?>%</p>
                                     <hr>
                                     <br>
@@ -122,6 +139,23 @@ while ($row = $loan_types->fetch_assoc()) {
                 </div>
             </div>
         </div>
+        <!-- Modal for payment -->
+        <div id="preloader"></div>
+        <div class="modal fade" id="uni_modal" role='dialog'>
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal for New Loan Application -->
         <div class="modal fade" id="newLoanModal" tabindex="-1" role="dialog" aria-labelledby="newLoanModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -137,20 +171,50 @@ while ($row = $loan_types->fetch_assoc()) {
                             <div class="form-group">
                                 <label for="loanType">Loan Type</label>
                                 <select class="form-control" id="loanType" name="loan_type_id">
-                                    <!-- Options will be populated dynamically using PHP -->
+                                    <?php
+                                    // Include your database connection file
+                                    include 'dbconnect.php';
+
+                                    // Perform the database query to fetch loan types
+                                    $result = $conn->query("SELECT * FROM loan_types");
+
+                                    // Check if the query was successful
+                                    if ($result && $result->num_rows > 0) {
+                                        // Loop through each row to generate options
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo '<option value="' . $row['id'] . '">' . $row['type_name'] . '</option>';
+                                        }
+                                    } else {
+                                        // No rows found or query failed
+                                        echo '<option value="">No loan types found</option>';
+                                    }
+
+                                    // Close database connection
+                                    $conn->close();
+                                    ?>
                                 </select>
+
                             </div>
+                            <!-- <div class="form-group">
+                                <label>Months</label>
+                                <input type="number" class="form-control" id="months" readonly>
+                            </div> -->
                             <div class="form-group">
                                 <label for="amount">Loan Amount</label>
                                 <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter loan amount">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
+                                <label>Monthly Installment</label>
+                                <input type="number" class="form-control" id="repaymentAmount" name="installment_amount" readonly>
+                            </div>-->
+                            <div class="form-group"> 
                                 <label for="purpose">Purpose</label>
                                 <textarea class="form-control" id="purpose" name="purpose" rows="3"></textarea>
                             </div>
+                            <input type="hidden" id="interest_rate">
                             <!-- Hidden input field for member_id -->
                             <input type="hidden" name="member_id" value="<?php echo $user_id; ?>">
-                             <!-- Hidden input field for status with default value of 0 -->
+                            <!-- Hidden input field for status with default value of 0 -->
                             <input type="hidden" name="status" id="status" value="<?php echo $default_status; ?>">
                         </form>
                     </div>
@@ -168,10 +232,108 @@ while ($row = $loan_types->fetch_assoc()) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/DataTables/datatables.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/venobox/venobox.min.js"></script>
+    <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="assets/vendor/counterup/counterup.min.js"></script>
+    <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript" src="assets/font-awesome/js/all.min.js"></script>
+    <!-- <script type="text/javascript" src="assets/font-awesome/js/font.js"></script> -->
+    <script type="text/javascript" src="assets/js/jquery-te-1.4.0.min.js" charset="utf-8"></script>
     <script>
+        window.start_load = function() {
+            $('body').prepend('<di id="preloader2"></di>')
+        }
+        window.end_load = function() {
+            $('#preloader2').fadeOut('fast', function() {
+                $(this).remove();
+            })
+        }
+        window.uni_modal = function($title = '', $url = '', $size = "") {
+            start_load()
+            $.ajax({
+                url: $url,
+                error: err => {
+                    console.log()
+                    alert("An error occured")
+                },
+                success: function(resp) {
+                    if (resp) {
+                        $('#uni_modal .modal-title').html($title)
+                        $('#uni_modal .modal-body').html(resp)
+                        if ($size != '') {
+                            $('#uni_modal .modal-dialog').addClass($size)
+                        } else {
+                            $('#uni_modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md")
+                        }
+                        $('#uni_modal').modal('show')
+                        end_load()
+                    }
+                }
+            })
+        }
+        window.alert_toast = function($msg = 'TEST', $bg = 'success') {
+            $('#alert_toast').removeClass('bg-success')
+            $('#alert_toast').removeClass('bg-danger')
+            $('#alert_toast').removeClass('bg-info')
+            $('#alert_toast').removeClass('bg-warning')
+
+            if ($bg == 'success')
+                $('#alert_toast').addClass('bg-success')
+            if ($bg == 'danger')
+                $('#alert_toast').addClass('bg-danger')
+            if ($bg == 'info')
+                $('#alert_toast').addClass('bg-info')
+            if ($bg == 'warning')
+                $('#alert_toast').addClass('bg-warning')
+            $('#alert_toast .toast-body').html($msg)
+            $('#alert_toast').toast({
+                delay: 3000
+            }).toast('show');
+        }
+        $(document).ready(function() {
+            $('#preloader').fadeOut('fast', function() {
+                $(this).remove();
+            })
+        })
+        // Get input elements
+        // var monthsInput = document.getElementById('months');
+        // var amountInput = document.getElementById('amount');
+        // var repaymentInput = document.getElementById('repaymentAmount');
+
+        // // Add event listeners to listen for changes in loan amount or months
+        // amountInput.addEventListener('input', calculateRepayment);
+        // monthsInput.addEventListener('input', calculateRepayment);
+
+        // // Function to calculate repayment amount
+        // function calculateRepayment() {
+        //     var months = parseInt(monthsInput.value);
+        //     var amount = parseFloat(amountInput.value);
+
+        //     // Check if months and amount are valid numbers
+        //     if (!isNaN(months) && !isNaN(amount)) {
+        //         // Calculate repayment amount
+        //         var repayment = (amount + (amount * interest_rate)) / months;
+
+        //         // Display repayment amount with two decimal places
+        //         repaymentInput.value = repayment.toFixed(2);
+        //     } else {
+        //         // If either input is not a valid number, display an error message
+        //         repaymentInput.value = 'Invalid input';
+        //     }
+        // }
+
         $(document).ready(function() {
 
-            $('#loan-list').dataTable()
+
             //TODO: create a payments portal for the sacco
             $('#new_payments').click(function() {
                 console.log('Payments button pressed');
@@ -180,30 +342,25 @@ while ($row = $loan_types->fetch_assoc()) {
             // Button click event to open the new loan modal
             $('#new_application').click(function() {
                 $('#newLoanModal').modal('show');
-                // Fetch loan types dynamically and populate the select input
-                $.ajax({
-                    url: 'ajax.php?action=get_loan_types',
-                    method: 'GET',
-                    success: function(response) {
-                        try {
-                            var types = JSON.parse(response);
-                            var options = '';
-                            types.forEach(function(type) {
-                                options += '<option value="' + type.id + '">' + type.type_name + '</option>';
-                            });
-                            $('#loanType').html(options);
-                        } catch (error) {
-                            console.error('Error parsing JSON:', error);
-                            // Handle the error, e.g., display a message to the user or log it
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error:', error);
-                        // Handle the AJAX error, e.g., display a message to the user or log it
-                    }
-                });
-
             });
+            // $('#loanType').change(function() {
+            //     var typeName = $(this).val(); // Get the selected loan type name
+            //     $.ajax({
+            //         url: 'ajax.php?action=get_loan_type_months', // URL of your PHP script to fetch months
+            //         type: 'POST',
+            //         data: {
+            //             type_name: typeName
+            //         }, // Pass the selected loan type name as data
+            //         success: function(response) {
+            //             $('#months').val(response); // Update the months input field with the response
+            //         },
+            //         error: function(xhr, status, error) {
+            //             console.error(xhr.responseText);
+            //             // Handle errors here
+            //         }
+            //     });
+            // });
+
 
             // Submit loan application form
             $('#submitLoan').click(function() {

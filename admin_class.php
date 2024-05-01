@@ -360,6 +360,7 @@ class Action
 			$data = " member_id = $member_id ";
 			$data .= ", loan_type_id = '$loan_type_id' ";
 			$data .= ", amount = '$amount' ";
+			// $data .= ", installment_amount = '$installment_amount' ";
 			$data .= ", purpose = '$purpose' ";
 			$data .= ", status = '$status' ";
 
@@ -441,7 +442,7 @@ class Action
 	{
 		extract($_POST);
 		$data = " loan_id = $loan_id ";
-		// $data .= " , payee = '$payee' ";
+		$data .= " , payment_method = '$payment_method' ";
 		$data .= " , amount = '$amount' ";
 		$data .= " , penalty_amount = '$penalty_amount' ";
 		$data .= " , overdue = '$overdue' ";
