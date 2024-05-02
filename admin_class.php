@@ -558,7 +558,7 @@ class Action
 		if ($update_result) {
 			$random_number = mt_rand(100000, 999999);
 			$account_number = 'SAV' . $random_number;
-			$insert_account_query = "INSERT INTO savings_account (member_id, account_number) VALUES ('$id', '$account_number')";
+			$insert_account_query = "INSERT INTO savings_account (member_id, account_no) VALUES ('$id', '$account_number')";
 			$insert_account_result = $this->db->query($insert_account_query);
 
 			if ($insert_account_result) {

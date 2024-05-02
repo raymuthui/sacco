@@ -67,6 +67,10 @@
           <div class="logo">
             <img src="assets/img/logo.png" width="250px">
           </div>
+          <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body text-white">
+            </div>
+          </div>
           <form id="registration-form">
             <div class="form-group row">
               <div class="col">
@@ -124,7 +128,27 @@
   </main>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
+  window.alert_toast = function($msg = 'TEST', $bg = 'success') {
+    $('#alert_toast').removeClass('bg-success')
+    $('#alert_toast').removeClass('bg-danger')
+    $('#alert_toast').removeClass('bg-info')
+    $('#alert_toast').removeClass('bg-warning')
+
+    if ($bg == 'success')
+      $('#alert_toast').addClass('bg-success')
+    if ($bg == 'danger')
+      $('#alert_toast').addClass('bg-danger')
+    if ($bg == 'info')
+      $('#alert_toast').addClass('bg-info')
+    if ($bg == 'warning')
+      $('#alert_toast').addClass('bg-warning')
+    $('#alert_toast .toast-body').html($msg)
+    $('#alert_toast').toast({
+      delay: 3000
+    }).toast('show');
+  }
   $('#registration-form').submit(function(e) {
     e.preventDefault();
 
@@ -147,16 +171,18 @@
       success: function(resp) {
         console.log('Response from server:', resp); //log the response
         if (resp == 1) {
-          // Redirect to success page
-          window.location.href = 'success_page.php'
+          alert_toast('Details submitted successfully.You will be contacted once registration is complete.')
+          setTimeout(function() {
+            window.location.href = 'login.php'
+          }, 3000);
         } else {
-          alert("Submission failed. Please try again.");
+          alert_toast('Submission failed. Please try again.', 'danger');
           location.reload();
         }
       },
       error: function(xhr, status, error) {
         console.error(xhr.responseText);
-        alert_toast("An error occurred while processing your request. Please try again later.");
+        alert_toast('An error occurred while processing your request. Please try again later.', 'danger');
         location.reload();
       }
     });

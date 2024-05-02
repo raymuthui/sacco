@@ -70,10 +70,11 @@ while ($row = $loan_types->fetch_assoc()) {
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between">
+                        <div class="card-header d-flex justify-content-between align-items-center">
                             My Loans
-                            <button class="btn btn-primary col-md-3 float-right" type="button" id="new_application"><i class="fa fa-plus"></i> Create New Application</button>
-                            <button class="btn btn-primary  col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> Make Payment</button>
+                            <button class="btn btn-primary " type="button" id="new_application"><i class="fa fa-plus"></i> Create New Application</button>
+                            <button class="btn btn-primary " type="button" id="new_payments"><i class="fa fa-plus"></i> Make Payment</button>
+                            <button class="btn btn-primary " type="button" id="new_payments"><i class="fa-solid fa-caret-down"></i> View Payment History</button>
                         </div>
                         <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
                             <?php

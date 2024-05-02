@@ -88,12 +88,12 @@
                 },
                 success: function(resp) {
                     if (resp == 1) {
-                        alert('Member successfully deleted');
+                        alert_toast('Member successfully deleted');
                         setTimeout(function() {
                             location.reload();
                         }, 1500);
                     } else {
-                        alert('Failed to delete member. Please try again');
+                        alert_toast('Failed to delete member. Please try again', 'danger');
                     }
                 },
                 error: function(xhr, status, error) {
@@ -117,17 +117,17 @@
                     },
                     success: function(resp) {
                         if (resp == 1) {
-                            alert('Member approved successfully.');
+                            alert_toast('Member approved successfully.');
                             setTimeout(function() {
                                 location.reload();
                             }, 1500);
                         } else {
-                            alert('Approval failed. Please try again.');
+                            alert_toast('Approval failed. Please try again.', 'danger');
                         }
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
-                        alert('An error occurred while processing your request. Please try again later.');
+                        alert_toast('An error occurred while processing your request. Please try again later.', 'danger');
                     }
                 });
             }
