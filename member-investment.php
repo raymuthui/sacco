@@ -61,6 +61,10 @@ while ($row = $investments_qry->fetch_assoc()) {
 
 <body>
     <?php include 'member-header.php' ?>
+    <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-white">
+        </div>
+    </div>
     <main class="container">
         <div class="container mt-5">
             <div class="row">
@@ -160,6 +164,25 @@ while ($row = $investments_qry->fetch_assoc()) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
+        window.alert_toast = function($msg = 'TEST', $bg = 'success') {
+            $('#alert_toast').removeClass('bg-success')
+            $('#alert_toast').removeClass('bg-danger')
+            $('#alert_toast').removeClass('bg-info')
+            $('#alert_toast').removeClass('bg-warning')
+
+            if ($bg == 'success')
+                $('#alert_toast').addClass('bg-success')
+            if ($bg == 'danger')
+                $('#alert_toast').addClass('bg-danger')
+            if ($bg == 'info')
+                $('#alert_toast').addClass('bg-info')
+            if ($bg == 'warning')
+                $('#alert_toast').addClass('bg-warning')
+            $('#alert_toast .toast-body').html($msg)
+            $('#alert_toast').toast({
+                delay: 3000
+            }).toast('show');
+        }
         $(document).ready(function() {
             // Button click event to open the new investment modal
             $('#new_investment').click(function() {
@@ -194,7 +217,7 @@ while ($row = $investments_qry->fetch_assoc()) {
                 var amount = parseFloat($('#amount').val());
 
                 if (amount < minAmount) {
-                    alert('Amount cannot be less than the minimum amount for this investment type.');
+                    alert_toast('Amount cannot be less than the minimum amount for this investment type.', 'danger');
                     return false;
                 }
                 return true;
@@ -209,7 +232,7 @@ while ($row = $investments_qry->fetch_assoc()) {
                         data: formData,
                         success: function(response) {
                             if (response == 1) {
-                                alert('Investment submitted successfully.');
+                                alert_toast('Investment submitted successfully.');
                                 $('#newInvestmentModal').modal('hide');
                                 // Refresh or update investment information display here
                                 setTimeout(function() {

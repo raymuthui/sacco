@@ -521,9 +521,9 @@ class Action
 		move_uploaded_file($profile_pic_temp, $upload_dir . $id_back_file);
 
 		// Insert user data into the database
-		$data = "lastname = '$lastname' ";
-		$data .= ", firstname = '$firstname' ";
-		$data .= ", middlename = '$middlename' ";
+		$data = "institution_name = '$institution_name' ";
+		$data .= ", rep_name = '$rep_name' ";
+		$data .= ", license_no = '$license_no' ";
 		$data .= ", address = '$address' ";
 		$data .= ", contact_no = '$contact_no' ";
 		$data .= ", email = '$email' ";

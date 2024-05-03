@@ -1,7 +1,7 @@
-<?php 
+<?php
 session_start();
 
-include ('db_connect.php');
+include('db_connect.php');
 
 $baseurl = "http://localhost/sacco";
 
@@ -39,6 +39,11 @@ if (!$member) {
 
 <body>
     <?php include 'member-header.php'; ?>
+
+    <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-white">
+        </div>
+    </div>
 
     <div class="container-fluid">
         <div class="row">
@@ -122,7 +127,7 @@ if (!$member) {
                                 $counter = 1;
                                 while ($transaction_row = $transactions_query->fetch_assoc()) :
                                 ?>
-                                   <tr style="background-color: <?php echo $transaction_row['type'] == 1 ? 'lightgreen' : 'salmon' ?>">
+                                    <tr style="background-color: <?php echo $transaction_row['type'] == 1 ? 'lightgreen' : 'salmon' ?>">
                                         <td class="text-center"><?php echo $counter++ ?></td>
                                         <td>
                                             <?php echo $transaction_row['type'] == 1 ? 'Deposit' : 'Withdrawal' ?>
@@ -178,36 +183,55 @@ if (!$member) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        window.alert_toast = function($msg = 'TEST', $bg = 'success') {
+            $('#alert_toast').removeClass('bg-success')
+            $('#alert_toast').removeClass('bg-danger')
+            $('#alert_toast').removeClass('bg-info')
+            $('#alert_toast').removeClass('bg-warning')
+
+            if ($bg == 'success')
+                $('#alert_toast').addClass('bg-success')
+            if ($bg == 'danger')
+                $('#alert_toast').addClass('bg-danger')
+            if ($bg == 'info')
+                $('#alert_toast').addClass('bg-info')
+            if ($bg == 'warning')
+                $('#alert_toast').addClass('bg-warning')
+            $('#alert_toast .toast-body').html($msg)
+            $('#alert_toast').toast({
+                delay: 3000
+            }).toast('show');
+        }
         // jQuery AJAX for deposit and withdrawal forms
-        $(document).ready(function () {
-            $('#deposit_form').submit(function (e) {
+        $(document).ready(function() {
+            $('#deposit_form').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
                     url: 'process_deposit.php', // PHP script to process deposit
                     method: 'POST',
                     data: $(this).serialize(),
-                    success: function (response) {
-                        alert(response); // Show success or error message
+                    success: function(response) {
+                        alert_toast(response); // Show success or error message
                         // Reload or update account balance and transactions
-                        setTimeout(function(){
-                                location.reload();
-                            },1500)
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1500)
                     }
                 });
             });
 
-            $('#withdraw_form').submit(function (e) {
+            $('#withdraw_form').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
                     url: 'process_withdrawal.php', // PHP script to process withdrawal
                     method: 'POST',
                     data: $(this).serialize(),
-                    success: function (response) {
-                        alert(response); // Show success or error message
+                    success: function(response) {
+                        alert_toast(response); // Show success or error message
                         // Reload or update account balance and transactions
-                        setTimeout(function(){
-                                location.reload();
-                            },1500)
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1500)
                     }
                 });
             });

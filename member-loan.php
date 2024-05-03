@@ -372,14 +372,14 @@ while ($row = $loan_types->fetch_assoc()) {
                     data: formData,
                     success: function(response) {
                         if (response == 1) {
-                            alert('Loan application submitted successfully.');
+                            alert_toast('Loan application submitted successfully.');
                             $('#newLoanModal').modal('hide');
                             // Refresh or update loan information display here
                             setTimeout(function() {
                                 location.reload();
                             }, 1500)
                         } else {
-                            alert('Failed to submit loan application.');
+                            alert_toast('Failed to submit loan application.', 'danger');
                         }
                     }
                 });

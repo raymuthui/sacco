@@ -24,6 +24,7 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Name</th>
+                                <th class="text-center">Member Type</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -36,8 +37,9 @@
                             ?>
                                 <tr>
                                     <td><?php echo $i++ ?></td>
-                                    <td><?php echo $row['full_name'] ?></td>
-                                    <td>
+                                    <td class="text-center"><?php echo isset($row['full_name']) ? $row['full_name'] : (isset($row['institution_name']) ? $row['institution_name'] : 'N/A'); ?></td>
+                                    <td class="text-center"><?php if (isset($row['full_name'])) { echo "Member"; } elseif (isset($row['institution_name'])) { echo "Institution"; } ?></td>
+                                    <td class="text-center">
                                         <?php
                                         if ($row['status'] == 0) {
                                             echo 'Pending';

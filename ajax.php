@@ -150,6 +150,12 @@ if ($action == "save_member") {
 		echo $save;
 }
 
+if ($action == "save_member2") {
+	$save = $crud->save_member2();
+	if ($save)
+		echo $save;
+}
+
 if ($action == "delete_member") {
 	$save = $crud->delete_member();
 	if ($save)
